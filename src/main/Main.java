@@ -1,6 +1,7 @@
 package main;
 
 import view.*;
+import model.*;
 
 /**
  * 
@@ -13,13 +14,15 @@ public class Main
 
 	/**
 	 * 
-	 * @param args argumenty glownej funkcji main
+	 * @param args argumenty głównej funkcji main
 	 * 
 	 */
 	public static void main(String[] args) 
 	{
+		Model mainmodel = new Model();
 		View mainview = new View();
 		mainview.start();
+		mainmodel.initialize();
 	}
 
 }
