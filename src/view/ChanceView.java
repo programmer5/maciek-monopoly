@@ -3,10 +3,8 @@ package view;
 import java.awt.Dimension;
 
 /**
- * 
- * @author Maciej Sułek
  * Klasa pola szansa
- *
+ * @author Maciej Sułek
  */
 public class ChanceView extends FieldView 
 {

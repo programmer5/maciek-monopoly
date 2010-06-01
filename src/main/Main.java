@@ -1,17 +1,20 @@
 package main;
 
+import java.awt.EventQueue;
+import java.util.concurrent.ArrayBlockingQueue;
+
+import controller.*;
 import view.*;
 import model.*;
 
 /**
  * 
- * @author Maciej Sulek
  * Glowna klasa uruchamiajaca poszczegolne elementy
+ * @author Maciej Sulek
  * 
  */
 public class Main
 {
-
 	/**
 	 * 
 	 * @param args argumenty głównej funkcji main
@@ -19,10 +22,32 @@ public class Main
 	 */
 	public static void main(String[] args) 
 	{
-		Model mainmodel = new Model();
-		View mainview = new View();
-		mainview.start();
-		mainmodel.initialize();
+		EventQueue.invokeLater(new Runnable()
+		{	
+			@Override
+			public void run() 
+			{
+				final int QUEUE_SIZE = 10;
+				ArrayBlockingQueue<ExtendEvent> blockingQueue = new ArrayBlockingQueue<ExtendEvent>(QUEUE_SIZE);
+				Model mainModel = new Model();
+				View mainView = new View(blockingQueue);
+				ViewChanger mainViewChanger = new ViewChanger(mainView);
+				mainView.start();
+				mainModel.initialize();
+				try 
+				{
+					new Controller(blockingQueue, mainViewChanger, mainModel);
+				} 
+				catch (SecurityException e) 
+				{
+					e.printStackTrace();
+				}
+				catch (NoSuchMethodException e) 
+				{
+					e.printStackTrace();
+				}
+			}
+		});
 	}
 
 }

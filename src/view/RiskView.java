@@ -1,11 +1,9 @@
 package view;
 
-import java.awt.Dimension;
-
 /**
  * 
- * @author Maciej Sułek
  * Klasa pola ryzyko
+ * @author Maciej Sułek
  *
  */
 public class RiskView extends FieldView 
@@ -23,7 +21,6 @@ public class RiskView extends FieldView
 	{
 		super();
 		riskPanel = new ImagePanel("data/risk.jpg");
-		riskPanel.setPreferredSize(new Dimension(BoardView.boardWidth / 8, BoardView.boardHeight / 16));
 		add(riskPanel);
 	}
 }

@@ -3,13 +3,27 @@ package model;
 import java.io.*;
 
 /**
- * @author Maciej Sułek
+ * 
  * Klasa odpowiedzialna za model gry
+ * @author Maciej Sułek
+ * 
  */
 public class Model
 {
 	/** zbior pol */
-	private FieldModel field[];
+	public FieldModel field[];
+	
+	/** liczba graczy */
+	public int playerNumber;
+	
+	/** zbior graczy */
+	public PlayerModel players[];
+	
+	/** zbior pionkow */
+	public CheckerModel checkers[];
+	
+	/** aktualny gracz */
+	private int currentPlayer;
 	
 	/**
 	 * Konstruktor klasy model
@@ -17,6 +31,10 @@ public class Model
 	public Model()
 	{
 		field = new FieldModel[30];
+		players = new PlayerModel[4];
+		checkers = new CheckerModel[4];
+		playerNumber = 0;
+		currentPlayer = 0;
 	}
 	
 	/**
@@ -63,7 +81,7 @@ public class Model
 		{
 			System.out.println("Błąd odczytu pliku - linia: " + (readLine + 1) + " - " + e.getMessage());
 		}
-		//ładowanie pół specjalnych
+		//ladowanie pol specjalnych
 		field[0] = new SpecialFieldModel("Start", SpecialFieldModel.START_BONUS, 1500);
 		field[3] = new SpecialFieldModel("Szansa", SpecialFieldModel.CHANCE);
 		field[7] = new SpecialFieldModel("Parking", SpecialFieldModel.NOTHING);
@@ -73,5 +91,47 @@ public class Model
 		field[19] = new SpecialFieldModel("Płacisz podatek", SpecialFieldModel.FEE, 250);
 		field[21] = new SpecialFieldModel("Odwiedasz więzienie", SpecialFieldModel.NOTHING);
 		field[26] = new SpecialFieldModel("Ryzyko", SpecialFieldModel.RISK);
+		for (int i = 0; i < 4; ++i) 
+			{
+				checkers[i] = new CheckerModel();
+				players[i] = new PlayerModel();
+			}
 	}
+	
+	/**
+	 * Pobranie aktualnego gracza
+	 * @return aktualny gracz
+	 */
+	public int getCurrentPlayer() 
+	{
+		return currentPlayer;
+	}
+
+	/**
+	 * @param currentPlayer nowy aktualny gracz
+	 */
+	public void setCurrentPlayer(int currentPlayer)
+	{
+		this.currentPlayer = currentPlayer;
+	}
+	
+	/**
+	 * Nastepny gracz
+	 * @return nextPlayer nastepny gracz
+	 */
+	 public int nextPlayer()
+	 {
+		 return (currentPlayer = (currentPlayer + 1) % playerNumber);
+	 }
+	 
+	 /**
+	  * pobranie aktualnego konta gracza
+	  * @param playerNumber numer gracza
+	  * @return saldo saldo gracza
+	  */
+	 public int getPlayerSaldo(int playerNumber)
+	 {
+		 return players[playerNumber].getSaldo();
+	 }
+	 
 }

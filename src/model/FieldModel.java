@@ -2,8 +2,9 @@ package model;
 
 /**
  * 
- * @author Maciej Sułek
  * Klasa przechowujaca informacje o polu
+ * @author Maciej Sułek
+ * 
  */
 public class FieldModel 
 {

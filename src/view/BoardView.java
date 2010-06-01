@@ -2,12 +2,16 @@ package view;
 
 import javax.swing.*;
 
+import controller.ExtendEvent;
+import controller.ExtendMouseMotion;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.GraphicsEnvironment;
 import java.awt.Toolkit;
 import java.awt.Dimension;
+import java.util.concurrent.BlockingQueue;
 
 /**
  * 
@@ -21,28 +25,39 @@ public final class BoardView extends JFrame
 {
 	/** wygenerowane id */
 	private static final long serialVersionUID = 1L;
+	
 	/** panel gorny */
 	private JPanel topPanel;
+	
 	/** panel dolny */
 	private JPanel bottomPanel;
+	
 	/** panel lewy */
 	private JPanel leftPanel;
+	
 	/** panel prawy */
 	private JPanel rightPanel;
+	
 	/** panel obsługi gry */
 	private ImagePanel gamePanel;
+	
 	/** szerokosc okna */
 	static int boardWidth;
+	
 	/** wysokosc okna */
 	static int boardHeight;
+	
+	/** kolejka blokujaca */
+	private BlockingQueue<ExtendEvent> queue;
 	
 	/**
 	 * 
 	 * Konstruktor klasy Board
 	 * 
 	 */
-	BoardView()
+	BoardView(BlockingQueue<ExtendEvent> _queue)
 	{
+		queue = _queue;
 		Toolkit toolkit = getToolkit();
 		Dimension dimension = toolkit.getScreenSize();
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -69,6 +84,8 @@ public final class BoardView extends JFrame
 		leftPanel = new JPanel();
 		rightPanel = new JPanel();
 		gamePanel = new ImagePanel("data/mainbg.jpg");
+		gamePanel.setName("gamePanel");
+		gamePanel.addMouseMotionListener(new ExtendMouseMotion(queue));
 		topPanel.setPreferredSize(new Dimension(boardWidth, boardHeight / 8));
 		bottomPanel.setPreferredSize(new Dimension(boardWidth, boardHeight / 8));
 		leftPanel.setPreferredSize(new Dimension(boardWidth / 8, boardHeight));
@@ -81,12 +98,14 @@ public final class BoardView extends JFrame
 		bottomPanel.setLayout(new BoxLayout(bottomPanel, BoxLayout.X_AXIS));
 		leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
 		rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
+		gamePanel.setLayout(new BoxLayout(gamePanel, BoxLayout.Y_AXIS));
 		add(topPanel, BorderLayout.PAGE_START);
 		add(bottomPanel, BorderLayout.PAGE_END);
 		add(leftPanel, BorderLayout.LINE_START);
 		add(rightPanel, BorderLayout.LINE_END);
 		add(gamePanel, BorderLayout.CENTER);
 //		gamePanel.repaint();
+		setAlwaysOnTop(false);
 		setVisible(true);
 		GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().setFullScreenWindow(this);
 	}

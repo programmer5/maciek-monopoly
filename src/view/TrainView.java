@@ -4,8 +4,8 @@ import java.awt.Dimension;
 
 /**
  * 
- * @author Maciej Sułek
  * Klasa pola stacji kolejowej
+ * @author Maciej Sułek
  *
  */
 public class TrainView extends FieldView 

@@ -11,8 +11,8 @@ import javax.swing.JPanel;
 
 /**
  * 
+ * Klasa panelu potrzebnego z obrazkiem
  * @author Maciej Sułek
- * klasa panelu potrzebnego do pola startu
  *
  */
 public class ImagePanel extends JPanel

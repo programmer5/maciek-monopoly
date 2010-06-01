@@ -4,8 +4,8 @@ import java.awt.Dimension;
 
 /**
  * 
- * @author Maciej Sułek
  * Klasa pola Start
+ * @author Maciej Sułek
  *
  */
 public final class StartView extends FieldView 

@@ -2,9 +2,9 @@ package model;
 
 /**
  * 
- * @author Maciej Sułek
  * Klasa do obsługi pól specjalnych takich jak:
  * szansa, ryzyko, opłata, pójście do więzienia, przejście przez start
+ * @author Maciej Sułek
  *
  */
 

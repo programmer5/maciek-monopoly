@@ -2,32 +2,41 @@ package model;
 
 /**
  * 
- * @author Maciej Sułek
  * Klasa modelu miasta
+ * @author Maciej Sułek
  *
  */
 public final class CityModel extends FieldModel
 {
 	/** cena miasta */
 	private int cityPrice;
+	
 	/** opłata za pobyt */
 	private int stayCost;
+	
 	/** opłata za pobyt gdy miasto ma jeden dom */
 	private int stayCost1;
+	
 	/** opłata za pobyt gdy miasto ma dwa domy */
 	private int stayCost2;
+	
 	/** opłata za pobyt gdy miasto ma trzy domy */
 	private int stayCost3;
+	
 	/** opłata za pobyt gdy miasto ma hotel */
 	private int stayCostHotel;
+	
 	/** numer dzielnicy */
 	private int district;
+	
 	/** koszt wybudowania domu */
 	private int houseCost;
+	
 	/** koszt wybudowania hotelu */
 	private int hotelCost;
-	/** status miasta - kupione true, do kupienia false */
-	private boolean isForBuy;
+	
+	/** status miasta - do kupienia 0, wartosci 1-4 numer gracza do ktorego nalezy miasto */
+	private short owner;
 	
 	/**
 	 * Kontruktor klasy CityModel
@@ -35,7 +44,7 @@ public final class CityModel extends FieldModel
 	public CityModel()
 	{
 		super();
-		isForBuy = true;
+		owner = 0;
 	}
 	
 	/**
@@ -112,15 +121,36 @@ public final class CityModel extends FieldModel
 	
 	/**
 	 * pobranie statusu miasta
-	 * @return status miasta(boolean)
-	 * jeśli miasto można kupić zwarca true, w przeciwnym razie false
+	 * @return status miasta(short)
+	 * jeśli miasto można kupić zwarca 0, w przeciwnym razie wlasciciela
 	 */
-	public boolean getCityStatus() { return isForBuy; }
+	public short getCityStatus() { return owner; }
 	
 	/** 
 	 * zmiana statusu miasta
-	 * @param status status miasta - true jesli na sprzedarz, false jesli nie
+	 * @param status status miasta - 0 jesli na sprzedarz, 1-4 jesli nie
 	 */
-	public void setCityStatus(boolean newIsForBuy) { isForBuy = newIsForBuy; }
+	public void setCityStatus(short newOwner) { owner = newOwner; }
+	
+	/**
+	 * zwrocenie wszystkich atrybutow jako tablica stringow
+	 * @return allParams[] tablica wszystkich parametrow w nastepujace kolejnosci:
+	 * fieldName, cityPrice, houseCost, hotelCost, owner, stayCost, stayCost1, stayCost2, stayCost3, stayCostHotel
+	 */
+	public String[] getAllParams()
+	{
+		String[] allParams = new String[10];
+		allParams[0] = fieldName;
+		allParams[1] = String.valueOf(cityPrice);
+		allParams[2] = String.valueOf(houseCost);
+		allParams[3] = String.valueOf(hotelCost);
+		allParams[4] = String.valueOf(owner);
+		allParams[5] = String.valueOf(stayCost);
+		allParams[6] = String.valueOf(stayCost1);
+		allParams[7] = String.valueOf(stayCost2);
+		allParams[8] = String.valueOf(stayCost3);
+		allParams[9] = String.valueOf(stayCostHotel);
+		return allParams;
+	}
 	
 }
