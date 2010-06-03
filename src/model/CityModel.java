@@ -38,6 +38,9 @@ public final class CityModel extends FieldModel
 	/** status miasta - do kupienia 0, wartosci 1-4 numer gracza do ktorego nalezy miasto */
 	private short owner;
 	
+	/** ilosc budynkow - 1-3 (dom(y)), 4 (hotel) */
+	private short estateNumber;
+	
 	/**
 	 * Kontruktor klasy CityModel
 	 */
@@ -45,6 +48,7 @@ public final class CityModel extends FieldModel
 	{
 		super();
 		owner = 0;
+		estateNumber = 0;
 	}
 	
 	/**
@@ -152,5 +156,83 @@ public final class CityModel extends FieldModel
 		allParams[9] = String.valueOf(stayCostHotel);
 		return allParams;
 	}
+
+	/**
+	 * Zwraca ilosc budynkow
+	 * @return estateNumber ilosc budynkow
+	 */
+	public short getEstateNumber() 
+	{
+		return estateNumber;
+	}
+
+	/**
+	 * Zmiana ilosci budynkow
+	 * @param estateNumber nowa ilosc budynkow
+	 */
+	public void setEstateNumber(short estateNumber) 
+	{
+		this.estateNumber = estateNumber;
+	}
 	
+	/**
+	 * Zwieksza o jeden ilosc budynkow
+	 */
+	public void incEstateNumber()
+	{
+		++estateNumber;
+	}
+
+	/**
+	 * Pobiera wlasciciela miasta
+	 * @return owner wlasciciel
+	 */
+	public short getOwner()
+	{
+		return this.owner;
+	}
+	
+	/**
+	 * Ustawia wlasciciela miasta
+	 * @param owner wlasciciel
+	 */
+	public void setOwner(short owner)
+	{
+		this.owner = owner;
+	}
+	
+	/**
+	 * Funkcja wywolywana podczas placenia gdy przeciwnik stanie na czyimś mieście
+	 * @param value czy gracz ma wszystki dzielnice
+	 * @return String[] tablica z kwota do zaplaty oraz komunikatem do wyswietlenia
+	 */
+	public String[] pay(int value)
+	{
+		String[] tmpTable = new String[2];
+		int forPay = 0;
+		if (estateNumber == 0)
+		{
+			forPay = stayCost;
+		}
+		else if (estateNumber == 1)
+		{
+			forPay = stayCost1;
+		}
+		else if (estateNumber == 2)
+		{
+			forPay = stayCost2;
+		}
+		else if (estateNumber == 3)
+		{
+			forPay = stayCost3;
+		}
+		else if (estateNumber == 4)
+		{
+			forPay = stayCostHotel;
+		}
+		if (value == 1) forPay = 2 * forPay;
+		tmpTable[0] = new String(String.valueOf(forPay));
+		tmpTable[1] = new String("Stanąłeś na nieswoje miasto. Płacisz: " + tmpTable[0] + ".");
+		return tmpTable;
+	}
 }

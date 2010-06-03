@@ -1,20 +1,16 @@
 package controller;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.Random;
-import java.util.Vector;
+import java.util.HashMap;
 import java.util.concurrent.BlockingQueue;
 
-import javax.swing.JOptionPane;
-
+import controller.actions.*;
+import controller.events.*;
 import view.*;
 import model.*;
 
 /**
- * 
  * Klasa kontrolera
  * @author Maciej Sulek
- *
  */
 
 public class Controller
@@ -25,20 +21,11 @@ public class Controller
 	/** glowny widok */
 	private static ViewChanger mainViewChanger;
 	
-	/** rozszerzenie zdarzen akcji */
-	private static ExtendEvent extendEvent;
-	
 	/** mapa par */
-	private static Vector<Pair> map;
-	
-	/** */
-	private ControllerRunnable controllerRunnable;
-	
-	/** */
-	private Thread controllerThread;
+	private final HashMap<Class<? extends ExtendEvent>, ExtendAction> map;;
 	
 	/** aktualny element mapy */
-	private static int act;
+	private static int actField;
 	
 	/** kolejka blokujaca */
 	private BlockingQueue<ExtendEvent> queue;
@@ -50,18 +37,72 @@ public class Controller
 	 * @param model model programu
 	 * @throws SecurityException wyjatek bezpieczenstwa
 	 * @throws NoSuchMethodException wyjatek nieodnalezionej metody
+	 * @throws ClassNotFoundException wyjatek nieznalezionej klasy
 	 */
 	public Controller(BlockingQueue<ExtendEvent> queue, ViewChanger viewChanger, Model model)
-		throws SecurityException, NoSuchMethodException
+		throws SecurityException, NoSuchMethodException, ClassNotFoundException
 	{
 		mainModel = model;
 		mainViewChanger = viewChanger;
-		map = new Vector<Pair>();
+		this.queue = queue;
+		map = new HashMap<Class<? extends ExtendEvent>, ExtendAction>();
 		createMap();
-		controllerRunnable = new ControllerRunnable(queue);
-		controllerThread = new Thread(controllerRunnable);
-		controllerThread.start();
 		loadData();
+	}
+	
+	public void work()
+	{
+		while(true)
+		{
+			ExtendEvent extendEvent;
+			try 
+			{
+				extendEvent = queue.take();
+				ExtendAction extendAction = map.get(extendEvent.getClass());
+				extendAction.perform();
+			}
+			catch (InterruptedException e) 
+			{
+				e.printStackTrace();
+				System.exit(0);
+			}
+		}
+	}
+	
+	/** 
+	 * Pobranie modelu
+	 * @return mainModel model
+	 */
+	public Model getModel()
+	{
+		return mainModel;
+	}
+	
+	/**
+	 * Pobranie fasady widoku
+	 * @return mainViewChanger fasada widoku
+	 */
+	public ViewChanger getViewChanger()
+	{
+		return mainViewChanger;
+	}
+	
+	/**
+	 * Pobranie numeru aktualnego panelu
+	 * @return actField aktualne pole
+	 */
+	public static int getActField()
+	{
+		return actField;
+	}
+	
+	/**
+	 * Ustawienie numeru aktualnego panelu
+	 * @param newActField nowa aktualne pole
+	 */
+	public static void setActField(int newActField)
+	{
+		actField = newActField;
 	}
 	
 	/**
@@ -72,144 +113,26 @@ public class Controller
 	public void createMap() 
 	throws SecurityException, NoSuchMethodException
 	{
-		map.add(new Pair("newGameButton", Controller.class.getMethod("newGameViewShow")));
-		map.add(new Pair("newGameButtonCancel", Controller.class.getMethod("newGameViewHide")));
-		map.add(new Pair("newGameButtonOk", Controller.class.getMethod("startNewGame")));
-		map.add(new Pair("closeGameButton", Controller.class.getMethod("closeGame")));
-		map.add(new Pair("rollDiceButton", Controller.class.getMethod("rollDice")));
-		map.add(new Pair("closeInfoButton", Controller.class.getMethod("closeInfo")));
-		map.add(new Pair("gamePanel", Controller.class.getMethod("closeInfo")));
-		map.add(new Pair("buyCityButton", Controller.class.getMethod("buyCity")));
-		map.add(new Pair("endTurnButton", Controller.class.getMethod("endTurn")));
+		map.put(ExtendNewGameEvent.class, new ExtendNewGameAction(this));
+		map.put(ExtendMouseEvent.class, new ExtendMouseAction(this));
+		map.put(ExtendHideCityInfoEvent.class, new ExtendHideCityInfoAction(this));
+		map.put(ExtendRollDiceEvent.class, new ExtendRollDiceAction(this));
+		map.put(ExtendBuyCityEvent.class, new ExtendBuyCityAction(this));
+		map.put(ExtendStartNewGameEvent.class, new ExtendStartNewGameAction(this));
+		map.put(ExtendCloseNewGameEvent.class, new ExtendCloseNewGameAction(this));
+		map.put(ExtendEndTurnEvent.class, new ExtendEndTurnAction(this));
+		map.put(ExtendCloseGameEvent.class, new ExtendCloseGameAction());
+		map.put(ExtendBuyHotelEvent.class, new ExtendBuyHotelAction(this));
+		map.put(ExtendBuyHouseEvent.class, new ExtendBuyHouseAction(this));
+		map.put(ExtendCloseCityInfoEvent.class, new ExtendCloseCityInfoAction(this));
 	}
 	
-	//FUNKCJE DLA OBIEKTOW
-	/**
-	 * pokazywanie okna nowej gry
-	 */
-	public static void newGameViewShow()
+	//FUNKCJE DLA OBIEKTOW		
+	/** konczenie gry */
+	public static void endGame()
 	{
-		mainView.newGameView.setVisible(true);
-	}
-	
-	/**
-	 * ukrywanie okna nowej gry
-	 */
-	public static void newGameViewHide()
-	{
-		mainView.newGameView.setVisible(false);
-	}
-	
-	/**
-	 * rozpoczynanie nowej gry
-	 */
-	public static void startNewGame()
-	{
-		if (mainView.newGameView.getFirstPlayer().equals("") == false) 
-		{
-			mainView.playerPanel[0].setPlayerName(mainView.newGameView.getFirstPlayer());
-			++mainModel.playerNumber;
-			if (mainView.newGameView.getSecondPlayer().equals("") == false) 
-			{
-				mainView.playerPanel[1].setPlayerName(mainView.newGameView.getSecondPlayer());
-				++mainModel.playerNumber;
-				if (mainView.newGameView.getThirdPlayer().equals("") == false) 
-				{
-					mainView.playerPanel[2].setPlayerName(mainView.newGameView.getThirdPlayer());
-					++mainModel.playerNumber;
-					if (mainView.newGameView.getFourthPlayer().equals("") == false) 
-					{
-						mainView.playerPanel[3].setPlayerName(mainView.newGameView.getFourthPlayer());
-						++mainModel.playerNumber;
-					}
-				}
-			}
-		}
-		if (mainModel.playerNumber == 0) 
-		{
-			JOptionPane.showMessageDialog(mainView.newGameView, "Nie wpisałeś nazwy żadnego gracza (pamiętaj, że wpisywanie musisz zacząć od pierwszego gracza)!", "Błąd nowej gry!", JOptionPane.ERROR_MESSAGE);
-		}
-		else if (mainModel.playerNumber == 1) 
-		{
-			JOptionPane.showMessageDialog(mainView.newGameView, "Jeden gracz to za mało (pamiętaj, że wpisywanie musisz zacząć od pierwszego gracza)!", "Błąd nowej gry!", JOptionPane.ERROR_MESSAGE);
-			mainModel.playerNumber = 0;
-		}
-		else
-		{
-			for (int i = 0; i < mainModel.playerNumber; ++i)
-			{
-				mainView.field[0].addChecker(mainView.checkers[i]);
-			}
-			for (int i = mainModel.playerNumber; i < 4; ++i) 
-			{
-				mainView.playerPanel[i].setVisible(false);
-			}
-			mainView.newGamePlayerMoney(mainModel.getPlayerSaldo(0));
-			mainView.newGameView.setVisible(false);
-			mainView.enableButtons();
-			mainView.playerPanel[0].setHighlight(true);
-		}
-		
-	}
-	
-	/**
-	 * konczenie gry
-	 */
-	public static void closeGame()
-	{
-		System.exit(0);
-	}
-	
-	/**
-	 * rzuczanie kostka
-	 */
-	public static void rollDice()
-	{
-		Random rnd = new Random();
-		int rndNumber = rnd.nextInt(6) + 1;
-		int actPlayer = mainModel.getCurrentPlayer();
-//		System.out.println("ads" + rndNumber);
-		int fieldNumber = mainModel.checkers[actPlayer].getFieldNumber();
-		int newFieldNumber = mainModel.checkers[actPlayer].moveOn(rndNumber);
-//		System.out.println("asd " + fieldNumber + " " + newFieldNumber);
-		mainView.setDiceResult(rndNumber);
-		mainView.moveChecker(actPlayer, fieldNumber, newFieldNumber);
-		mainView.changeRollDiceButtonState();
-	}
-	
-	/**
-	 * zamkniecie okna informacji o miescie
-	 */
-	public static void closeInfo()
-	{
-		mainView.cityInfoView.setVisible(false);
-	}
-	
-	/**
-	 * zakup miasta
-	 */
-	public static void buyCity()
-	{
-		
-	}
-	
-	/** konczenie tury */
-	public static void endTurn()
-	{
-		mainView.nextPlayer(mainModel.getCurrentPlayer(), mainModel.nextPlayer());
-		mainView.changeRollDiceButtonState();
-	}
-	
-	/**
-	 * standardowa akcja dla panelu
-	 */
-	public static void panelAction()
-	{
-		if (mainModel.field[act] instanceof CityModel == false) return;
-		String[] tmpParams = ((CityModel)mainModel.field[act]).getAllParams();
-		mainView.cityInfoView.updateAll(tmpParams);
-		mainView.cityInfoView.setVisible(true);
-		System.out.println("Panel: " + String.valueOf(act));
+		mainViewChanger.allButtonsEnableFalse();
+		mainViewChanger.showGameDialog("Saldo jednego z graczy jest mniejsze od zera, co powoduje, że dalsza gra musi być przerwana! Gratulacje dla zwycięzcy!", "Koniec GRY!");
 	}
 	
 	/**
@@ -223,66 +146,9 @@ public class Controller
 		for (int i = 0; i < 28; ++i)
 		{
 			if (mainModel.field[i] instanceof CityModel)
-				((CityView)mainView.field[i]).setCityName(mainModel.field[i].getFieldName());
-			map.add(new Pair(String.valueOf(i), Controller.class.getMethod("panelAction")));
-		}
-	}
-	
-	/**
-	 * 
-	 * @author Maciej Sulek
-	 * Klasa prywatna implementujaca watek
-	 *
-	 */
-	private class ControllerRunnable implements Runnable
-	{		
-		public ControllerRunnable(BlockingQueue<ExtendEvent> _queue)
-		throws SecurityException, NoSuchMethodException
-		{
-			queue = _queue;
-		}
-		
-		@Override
-		public void run() 
-		{	
-			while(true)
 			{
-				try 
-				{
-					extendEvent = queue.take();
-					for (int i = 0; i < map.size(); ++i)
-					{
-						//System.out.println(extendActionEvent.getCommand());
-						if (map.get(i).getCommand().equals((extendEvent).getCommand()))
-						{
-							try
-							{
-								act = Integer.parseInt(map.get(i).getCommand());
-							}
-							catch (NumberFormatException e)
-							{
-								act = 0;
-							}
-							map.get(i).getMethod().invoke(null);
-						}
-					}
-				}
-				catch (InterruptedException e) 
-				{
-					e.printStackTrace();
-				} 
-				catch (IllegalArgumentException e) 
-				{
-					e.printStackTrace();
-				}
-				catch (IllegalAccessException e)
-				{
-					e.printStackTrace();
-				}
-				catch (InvocationTargetException e) 
-				{
-					e.printStackTrace();
-				} 
+				mainViewChanger.setCityName(i, mainModel.field[i].getFieldName());
+				mainViewChanger.setFieldCheckerPanelColor(i, ((CityModel)mainModel.field[i]).getDistrict());
 			}
 		}
 	}

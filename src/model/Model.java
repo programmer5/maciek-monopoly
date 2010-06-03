@@ -14,7 +14,7 @@ public class Model
 	public FieldModel field[];
 	
 	/** liczba graczy */
-	public int playerNumber;
+	private int playerNumber;
 	
 	/** zbior graczy */
 	public PlayerModel players[];
@@ -80,24 +80,47 @@ public class Model
 		catch (Exception e)
 		{
 			System.out.println("Błąd odczytu pliku - linia: " + (readLine + 1) + " - " + e.getMessage());
+			System.exit(0);
 		}
 		//ladowanie pol specjalnych
 		field[0] = new SpecialFieldModel("Start", SpecialFieldModel.START_BONUS, 1500);
 		field[3] = new SpecialFieldModel("Szansa", SpecialFieldModel.CHANCE);
-		field[7] = new SpecialFieldModel("Parking", SpecialFieldModel.NOTHING);
+		field[5] = new TrainModel("Koleje zachodnie");
+		field[7] = new SpecialFieldModel("GoToJail", SpecialFieldModel.GO_TO_JAIL);
 		field[10] = new SpecialFieldModel("Ryzyko", SpecialFieldModel.RISK);
-		field[14] = new SpecialFieldModel("Idziesz do więzienia", SpecialFieldModel.GO_TO_JAIL);
+		field[12] = new TrainModel("Koleje północne");
+		field[14] = new SpecialFieldModel("Parking", SpecialFieldModel.NOTHING);
 		field[16] = new SpecialFieldModel("Szansa", SpecialFieldModel.CHANCE);
+		field[18] = new TrainModel("Koleje wschodnie");
 		field[19] = new SpecialFieldModel("Płacisz podatek", SpecialFieldModel.FEE, 250);
 		field[21] = new SpecialFieldModel("Odwiedasz więzienie", SpecialFieldModel.NOTHING);
+		field[24] = new TrainModel("Koleje południowe");
 		field[26] = new SpecialFieldModel("Ryzyko", SpecialFieldModel.RISK);
 		for (int i = 0; i < 4; ++i) 
-			{
-				checkers[i] = new CheckerModel();
-				players[i] = new PlayerModel();
-			}
+		{
+			checkers[i] = new CheckerModel();
+			players[i] = new PlayerModel();
+		}
 	}
 	
+	/**
+	 * Pobranie liczby graczy
+	 * @return playerNumber liczba graczy
+	 */
+	public int getPlayerNumber() 
+	{
+		return playerNumber;
+	}
+
+	/**
+	 * Zmiana liczby graczy 
+	 * @param playerNumber nowa liczba graczy
+	 */
+	public void setPlayerNumber(int playerNumber) 
+	{
+		this.playerNumber = playerNumber;
+	}
+
 	/**
 	 * Pobranie aktualnego gracza
 	 * @return aktualny gracz
@@ -134,4 +157,77 @@ public class Model
 		 return players[playerNumber].getSaldo();
 	 }
 	 
+	 /**
+	  * Zwraca numer wlasciciela (1-4) lub ze miasto do kupienia (0)
+	  * @param cityNumber
+	  * @return
+	  */
+	 public short whoIsThisCity(int cityNumber)
+	 {
+		 if (field[cityNumber] instanceof CityModel)
+		 {
+			 short forReturn = ((CityModel)field[cityNumber]).getCityStatus();
+			 return forReturn;
+		 }
+		 else if (field[cityNumber] instanceof TrainModel)
+		 {
+			 short forReturn = ((TrainModel)field[cityNumber]).getOwner();
+			 return forReturn;
+		 }
+		 return -1;
+	 }
+	 
+	 public void setCityOwner(int cityNumber, short owner)
+	 {
+		 if (field[cityNumber] instanceof CityModel)
+		 {
+			 ((CityModel)field[cityNumber]).setOwner(owner);
+		 }
+		 else if (field[cityNumber] instanceof TrainModel)
+		 {
+			 ((TrainModel)field[cityNumber]).setOwner(owner);
+		 }
+	 }
+	 
+	 /**
+	  * Sprawdza czy gracz posiada posiada dzielnice lub ile dworcow kolejowych posiada
+	  * @param fieldNumber
+	  * @param who
+	  * @return number posiada 1 jesli ma dzielnice lub ilosc dworcow kolejowych
+	  */
+	 public int playerHasDistrict(int fieldNumber, short who)
+	 {
+		 int number = 1;
+		 if (field[fieldNumber] instanceof CityModel)
+		 {
+			 int searchDistrict = ((CityModel)field[fieldNumber]).getDistrict();
+			 for (int i = 0; i < 28; ++i)
+			 {
+				 if (field[i] instanceof CityModel)
+				 {
+					 if (((CityModel)field[i]).getDistrict() == searchDistrict && ((CityModel)field[i]).getOwner() != who)
+					 {
+						return 0; 
+					 }
+				 }
+			 }
+			 return 1;
+		 }
+		 else if (field[fieldNumber] instanceof TrainModel)
+		 {
+			 for (int i = 0; i < 28; ++i)
+			 {
+				 if (field[i] instanceof TrainModel)
+				 {
+					 if (((TrainModel)field[i]).getOwner() == who)
+					 {
+						++number;
+					 }
+				 }
+			 }
+			 return number;
+		 }
+		 return -1;
+	 }
 }
+

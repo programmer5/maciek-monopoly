@@ -1,7 +1,9 @@
 package view;
 
 import java.awt.Color;
+import java.awt.Font;
 
+import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 
@@ -23,6 +25,9 @@ public class PlayerPanelView extends JPanel
 	/** posiadane pieniadze */
 	private JLabel playerMoney;
 	
+	/** przycisk wyswietlania dostepnych miast */
+	private JButton showPlayerCities;
+	
 	/**
 	 * konstruktor klasy PlayerPanelView
 	 */
@@ -30,7 +35,11 @@ public class PlayerPanelView extends JPanel
 	{
 		setOpaque(false);
 		playerName = new JLabel("Gracz");
+		playerName.setFont(new Font("Arial", Font.PLAIN, 22));
 		playerMoney = new JLabel("0");
+		playerMoney.setFont(new Font("Arial", Font.BOLD, 22));
+		showPlayerCities = new JButton("Zobacz swoje miasta");
+		showPlayerCities.setName("playerCities");
 		add(playerName);
 		add(playerMoney);
 	}

@@ -10,7 +10,9 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
-import controller.*;
+import controller.events.ExtendEvent;
+import controller.listeners.ExtendCloseNewGameListener;
+import controller.listeners.ExtendStartNewGameListener;
 
 /**
  * 
@@ -49,7 +51,6 @@ public class NewGameView extends JFrame
 		int height = 200;
 		Toolkit toolkit = getToolkit();
 		Dimension dimension = toolkit.getScreenSize();
-		//setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setTitle("Rozpocznij nową grę!");
 		setSize(width, height);
 		setLocation(dimension.width / 2 - width / 2, dimension.height / 2 - height / 2);
@@ -68,20 +69,12 @@ public class NewGameView extends JFrame
 		add(new JLabel("Nazwa pierwszego gracza:"), 0, 0);
 		add(firstPlayer, 0, 1);
 		JButton newGameOk = new JButton("Zaczynamy!");
-		newGameOk.setName("newGameButtonOk");
-		newGameOk.addActionListener(new ExtendActionListener(queue));
+		newGameOk.addActionListener(new ExtendStartNewGameListener(queue));
 		add(newGameOk, 4, 0);
 		JButton newGameCancel = new JButton("Może później...");
-		newGameCancel.setName("newGameButtonCancel");
-		newGameCancel.addActionListener(new ExtendActionListener(queue));
+		newGameCancel.addActionListener(new ExtendCloseNewGameListener(queue));
 		add(newGameCancel, 4, 1);
 	}
-	
-	/**
-	 * pokazywanie okna 
-	 */
-	public void makeVisible() { setVisible(true); }
-	
 	
 	/**
 	 * @return the firstPlayer name

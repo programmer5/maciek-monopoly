@@ -1,9 +1,8 @@
 package main;
 
-import java.awt.EventQueue;
 import java.util.concurrent.ArrayBlockingQueue;
-
 import controller.*;
+import controller.events.ExtendEvent;
 import view.*;
 import model.*;
 
@@ -18,36 +17,30 @@ public class Main
 	/**
 	 * 
 	 * @param args argumenty głównej funkcji main
+	 * @throws ClassNotFoundException 
 	 * 
 	 */
-	public static void main(String[] args) 
+	public static void main(String[] args) throws ClassNotFoundException 
 	{
-		EventQueue.invokeLater(new Runnable()
-		{	
-			@Override
-			public void run() 
-			{
-				final int QUEUE_SIZE = 10;
-				ArrayBlockingQueue<ExtendEvent> blockingQueue = new ArrayBlockingQueue<ExtendEvent>(QUEUE_SIZE);
-				Model mainModel = new Model();
-				View mainView = new View(blockingQueue);
-				ViewChanger mainViewChanger = new ViewChanger(mainView);
-				mainView.start();
-				mainModel.initialize();
-				try 
-				{
-					new Controller(blockingQueue, mainViewChanger, mainModel);
-				} 
-				catch (SecurityException e) 
-				{
-					e.printStackTrace();
-				}
-				catch (NoSuchMethodException e) 
-				{
-					e.printStackTrace();
-				}
-			}
-		});
+		final int QUEUE_SIZE = 30;
+		ArrayBlockingQueue<ExtendEvent> blockingQueue = new ArrayBlockingQueue<ExtendEvent>(QUEUE_SIZE);
+		Model mainModel = new Model();
+		View mainView = new View(blockingQueue);
+		ViewChanger mainViewChanger = new ViewChanger(mainView);
+		mainView.start();
+		mainModel.initialize();
+		try 
+		{
+			Controller controller = new Controller(blockingQueue, mainViewChanger, mainModel);
+			controller.work();
+		} 
+		catch (SecurityException e) 
+		{
+			e.printStackTrace();
+		}
+		catch (NoSuchMethodException e) 
+		{
+			e.printStackTrace();
+		}
 	}
-
 }

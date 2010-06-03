@@ -6,18 +6,17 @@ import java.awt.Toolkit;
 import java.util.concurrent.BlockingQueue;
 
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
-import controller.ExtendActionListener;
-import controller.ExtendEvent;
+import controller.events.ExtendEvent;
+import controller.listeners.ExtendCloseCityInfoListener;
 
 /**
  * Klasa do wyswietlania informacji o miescie
  * @author Maciej Sulek
  */
-public class CityInfoView extends JDialog
+public class CityInfoView extends JFrame
 {
 	/** wygenerowane id */
 	private static final long serialVersionUID = 941476864956063109L;
@@ -146,7 +145,7 @@ public class CityInfoView extends JDialog
 	/** 
 	 * Konstruktor klasy CityInfoView
 	 */
-	CityInfoView(BlockingQueue<ExtendEvent> _queue)
+	CityInfoView(BlockingQueue<ExtendEvent> queue)
 	{
 		setAlwaysOnTop(true);
 		int width = 400, height = 600;
@@ -156,7 +155,7 @@ public class CityInfoView extends JDialog
 		setSize(new Dimension(width, height));
 		JButton closeInfo = new JButton("Zamknij");
 		closeInfo.setName("closeInfoButton");
-		closeInfo.addActionListener(new ExtendActionListener(_queue));
+		closeInfo.addActionListener(new ExtendCloseCityInfoListener(queue));
 		cityName = new JLabel();
 		cityPrice = new JLabel();
 		hotelCost = new JLabel();

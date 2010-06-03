@@ -1,17 +1,22 @@
 package view;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.GridLayout;
 import java.util.concurrent.BlockingQueue;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-import controller.*;
+import controller.events.ExtendEvent;
+import controller.listeners.*;
 
 /**
  * 
@@ -22,16 +27,16 @@ import controller.*;
 public class View 
 {
 	/** przechowuje widok planszy */
-	public BoardView mainboard;
+	private BoardView mainboard;
 	
 	/** przechowuje pola */
-	public FieldView field[];
+	private FieldView field[];
 	
 	/** przechowuje panele gracza */
-	public PlayerPanelView playerPanel[];
+	private PlayerPanelView playerPanel[];
 	
 	/** przechowuje zbior pionkow */
-	public ImagePanel checkers[];
+	private ImagePanel checkers[];
 	
 	/** przycisk rozpoczynający nową grę */
 	private JButton newGameButton;
@@ -61,10 +66,10 @@ public class View
 	private BlockingQueue<ExtendEvent> queue;
 	
 	/** okno nowej gry */
-	public NewGameView newGameView;
+	private NewGameView newGameView;
 	
 	/** okno informacji o miescie */
-	public CityInfoView cityInfoView;
+	private CityInfoView cityInfoView;
 	
 	/** panel menu */
 	private JPanel menuPanel;
@@ -78,10 +83,12 @@ public class View
 	/** srodkowy panel w menu */
 	private JPanel menuPanelCenter;
 	
+	/** kolory dzielnic */
+	private Color[] districtColors;
+	
 	/**
-	 * 
 	 * Konstruktor klasy View
-	 * 
+	 * @param queue kolejka blokujaca
 	 */
 	public View(BlockingQueue<ExtendEvent> queue)
 	{
@@ -132,16 +139,11 @@ public class View
 		playerPanel[0].setPlayerName("Gracz pierwszy");
 		playerPanel[1].setPlayerName("Gracz drugi");
 		playerPanel[2].setPlayerName("Gracz trzeci");
-		playerPanel[3].setPlayerName("Gracz czwarty");
-		ExtendActionListener newGameButtonListener = new ExtendActionListener(queue);
+		playerPanel[3].setPlayerName("Gracz czwarty");;
 		newGameButton = new JButton("Nowa gra");
-//		newGameButton.setPreferredSize(new Dimension(400, 40));
-		newGameButton.setName("newGameButton");
-		newGameButton.addActionListener(newGameButtonListener);
+		newGameButton.addActionListener(new ExtendNewGameListener(queue));
 		closeGameButton = new JButton("Zakończ");
-//		closeGameButton.setPreferredSize(new Dimension(400, 40));
-		closeGameButton.setName("closeGameButton");
-		closeGameButton.addActionListener(new ExtendActionListener(queue));
+		closeGameButton.addActionListener(new ExtendCloseGameListener(queue));
 		newGameView = new NewGameView(queue);
 		cityInfoView = new CityInfoView(queue);
 		//ustawianie paneli gry
@@ -155,26 +157,26 @@ public class View
 		menuPanelCenter.setOpaque(false);
 		//tworzenie przyciskow
 		rollDiceButton = new JButton("Rzuc kostka!");
-		rollDiceButton.setName("rollDiceButton");
-		rollDiceButton.addActionListener(new ExtendActionListener(queue));
+		rollDiceButton.addActionListener(new ExtendRollDiceListener(queue));
 		rollDiceButton.setEnabled(false);
 		diceResult = new JLabel("1");
-		buyCityButton = new JButton("Kup to miasto!");
-		buyCityButton.setName("buyCityButton");
-		buyCityButton.addActionListener(new ExtendActionListener(queue));
+		diceResult.setFont(new Font("Arial", Font.BOLD, 20));
+		diceResult.setPreferredSize(new Dimension(20,20));
+		buyCityButton = new JButton("Kupuję!");
+		buyCityButton.addActionListener(new ExtendBuyCityListener(queue));
 		buyCityButton.setEnabled(false);
 		buyHouseButton = new JButton("Kup dom");
-		buyHouseButton.setName("buyHouseButton");
-		buyHouseButton.addActionListener(new ExtendActionListener(queue));
+		buyHouseButton.addActionListener(new ExtendBuyHouseListener(queue));
 		buyHouseButton.setEnabled(false);
 		buyHotelButton = new JButton("Kup hotel");
-		buyHotelButton.setName("buyHouseButton");
-		buyHotelButton.addActionListener(new ExtendActionListener(queue));
+		buyHotelButton.addActionListener(new ExtendBuyHotelListener(queue));
 		buyHotelButton.setEnabled(false);
 		endTurnButton = new JButton("Zakoncz ture");
-		endTurnButton.setName("endTurnButton");
-		endTurnButton.addActionListener(new ExtendActionListener(queue));
+		endTurnButton.addActionListener(new ExtendEndTurnListener(queue));
 		endTurnButton.setEnabled(false);
+		rollDiceButton.setPreferredSize(endTurnButton.getPreferredSize());
+		//inicjalizacja kolorow dzielnic
+		districtColors = new Color[10];
 		//inicjalizacja pionkow
 		checkers = new ImagePanel[4];
 	}
@@ -191,28 +193,28 @@ public class View
 			{
 				mainboard.addToLeftPanel(field[i]);
 				field[i].setName(String.valueOf(i));
-				field[i].addMouseMotionListener(new ExtendMouseMotion(queue));
+				field[i].addMouseMotionListener(new ExtendMouseMotion(queue, i));
 			}
 		for (int i = 7; i <= 14; ++i)
 			{
 				mainboard.addToTopPanel(field[i]);
 				field[i].setName(String.valueOf(i));
-				field[i].addMouseMotionListener(new ExtendMouseMotion(queue));
+				field[i].addMouseMotionListener(new ExtendMouseMotion(queue, i));
 			}
 		for (int i = 15; i <= 20; ++i)
 			{
 				mainboard.addToRightPanel(field[i]);
 				field[i].setName(String.valueOf(i));
-				field[i].addMouseMotionListener(new ExtendMouseMotion(queue));
+				field[i].addMouseMotionListener(new ExtendMouseMotion((queue), i));
 			}
 		mainboard.addToBottomPanel(field[0]);
 		field[0].setName(String.valueOf(0));
-		field[0].addMouseMotionListener(new ExtendMouseMotion(queue));
+		field[0].addMouseMotionListener(new ExtendMouseMotion(queue, 0));
 		for (int i = 27; i >= 21; --i) 
 			{
 				mainboard.addToBottomPanel(field[i]);
 				field[i].setName(String.valueOf(i));
-				field[i].addMouseMotionListener(new ExtendMouseMotion(queue));
+				field[i].addMouseMotionListener(new ExtendMouseMotion(queue, i));
 			}
 		menuPanel.setLayout(new GridLayout(1, 3));
 		for (int i = 0; i < 4; ++i) mainboard.addToGamePanel(playerPanel[i]);
@@ -221,10 +223,10 @@ public class View
 		menuPanel.add(menuPanelRight);
 		menuPanelLeft.add(diceResult);
 		menuPanelLeft.add(rollDiceButton);
+		menuPanelLeft.add(endTurnButton);
 		menuPanelLeft.add(buyCityButton);
 		menuPanelLeft.add(buyHouseButton);
 		menuPanelLeft.add(buyHotelButton);
-		menuPanelLeft.add(endTurnButton);
 		menuPanelRight.add(newGameButton);
 		menuPanelRight.add(closeGameButton);
 		mainboard.addToGamePanel(menuPanel);
@@ -232,6 +234,17 @@ public class View
 		checkers[1] = new ImagePanel("data/checker2.gif");
 		checkers[2] = new ImagePanel("data/checker3.gif");
 		checkers[3] = new ImagePanel("data/checker4.gif");
+		//wybor kolorow
+		districtColors[0] = Color.blue;
+		districtColors[1] = Color.cyan;
+		districtColors[2] = Color.green;
+		districtColors[3] = Color.magenta;
+		districtColors[4] = Color.orange;
+		districtColors[5] = Color.pink;
+		districtColors[6] = Color.yellow;
+		districtColors[7] = Color.red;
+		districtColors[8] = Color.black;
+		//pelny ekran
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		GraphicsDevice gs = ge.getDefaultScreenDevice();
 		gs.setFullScreenWindow(mainboard);
@@ -269,29 +282,42 @@ public class View
 	 * @param playerNumber numer gracza
 	 * @param newPlayerMoney nowa ilosc pieniedzy
 	 */
-	public void newPlayerMoney(int playerNumber, int newPlayerMoney)
+	public void setPlayerMoney(int playerNumber, int newPlayerMoney)
 	{
 		playerPanel[playerNumber].setPlayerMoney(String.valueOf(newPlayerMoney));
 	}
 	
 	/**
-	 * Zmiana stanu przycisku do rzucania kostka
+	 * Zmiana stanu przyciskow rollDice oraz endTurn
+	 * @param rollDiceValue wartosc dostepnosci przycisku rollDiceButton
+	 * @param endTurnValue wartosc dostepnosci przycisku endTurnValue
 	 */
-	public void changeRollDiceButtonState()
+	public void changeGameButtonsState(boolean rollDiceValue, boolean endTurnValue)
 	{
-		rollDiceButton.setEnabled(!(rollDiceButton.isEnabled()));
+		rollDiceButton.setVisible(rollDiceValue);
+		endTurnButton.setVisible(endTurnValue);
 	}
 	
+	/**
+	 * Zmiana dostepnosci przycisku buyCityButton
+	 * @param value ustwiana wartosc
+	 */
+	public void changeBuyCityButtonState(boolean value)
+	{
+		buyCityButton.setEnabled(value);
+	}
+
 	/**
 	 * Uaktywnienie przyciskow do gry
 	 */
 	public void enableButtons()
 	{
 		rollDiceButton.setEnabled(true);
-		buyCityButton.setEnabled(true);
-		buyHouseButton.setEnabled(true);
-		buyHotelButton.setEnabled(true);
+		buyCityButton.setEnabled(false);
+		buyHouseButton.setEnabled(false);
+		buyHotelButton.setEnabled(false);
 		endTurnButton.setEnabled(true);
+		endTurnButton.setVisible(false);
 	}
 	
 	/** 
@@ -312,5 +338,168 @@ public class View
 	{
 		playerPanel[actPlayer].setHighlight(false);
 		playerPanel[nextPlayer].setHighlight(true);
+	}
+	
+	/**
+	 * Zmiana widocznosci okna nowej gry
+	 * @param decison nowa wartosc widocznosci okna
+	 */
+	public void setNewGameVisible(boolean decison)
+	{
+		newGameView.setVisible(decison);
+	}
+	
+	/**
+	 * Pobranie nazwy uzytkownikow
+	 * @return playersNames tablica z nazwami graczy
+	 */
+	public String[] getPlayersNames()
+	{
+		String[] playersNames = new String[4];
+		playersNames[0] = new String(newGameView.getFirstPlayer());
+		playersNames[1] = new String(newGameView.getSecondPlayer());
+		playersNames[2] = new String(newGameView.getThirdPlayer());
+		playersNames[3] = new String(newGameView.getFourthPlayer());
+		return playersNames;
+	}
+	
+	/**
+	 * Ustawia nazwy graczy widoczne w grze
+	 * @param playersNames tablica z nazwami uzytkownikow
+	 */
+	public void setGamePlayersNames(String[] playersNames)
+	{
+		playerPanel[0].setPlayerName(playersNames[0]);
+		playerPanel[1].setPlayerName(playersNames[1]);
+		playerPanel[2].setPlayerName(playersNames[2]);
+		playerPanel[3].setPlayerName(playersNames[3]);
+	}
+	
+	/**
+	 * Wyswietlanie dialgow na oknie nowej nazwy
+	 * @param text tekst wiadomosci
+	 * @param title tytul okna
+	 */
+	public void showNewGameDialog(String text, String title)
+	{
+		JOptionPane.showMessageDialog(mainboard, text, title, JOptionPane.ERROR_MESSAGE);
+	}
+	
+	/**
+	 * Wyswietlanie dialgow na oknie glownym
+	 * @param text tekst wiadomosci
+	 * @param title tytul okna
+	 */
+	public void showGameDialog(String text, String title)
+	{
+		JOptionPane.showMessageDialog(mainboard, text, title, JOptionPane.INFORMATION_MESSAGE);
+	}
+	
+	/**
+	 * Wlaczanie/wylaczanie podswietlenia gracza
+	 * @param playerNumber numer gracza
+	 * @param value true - wlacz podswietlenie, false - wylacz podswietlenie
+	 */
+	public void setPlayerHighlight(int playerNumber, boolean value)
+	{
+		playerPanel[playerNumber].setHighlight(value);
+	}
+	
+	/**
+	 * Zmiana widocznosci panelu gracza
+	 * @param player number numer gracza
+	 * @param value true - pokaz, false - ukryj
+	 */
+	public void setPlayerPanelVisible(int playerNumber, boolean value)
+	{
+		playerPanel[playerNumber].setVisible(value);
+	}
+	
+	/**
+	 * Ustawianie pionka na poczatku
+	 * @param playerNumber numer gracza
+	 */
+	public void newGameCheckersState(int playerNumber)
+	{
+		field[0].addChecker(checkers[playerNumber]);
+	}
+	
+	/**
+	 * Zmiana widocznosci okna CityInfoView
+	 * @param value nowa wartosc
+	 */
+	public void setVisibleCityInfoView(boolean value)
+	{
+		cityInfoView.setVisible(value);
+	}
+	
+	/**
+	 * Aktualizacja parametrow okna CityInfoView
+	 * @param allParams tablica z wszystkimi atrybutami w nastepujacej kolejnosci:
+	 * cityName, cityPrice, houseCost, hotelCost, owner, stayCost, stayCost1, stayCost2, stayCost3, stayCostHotel
+	 */
+	public void updateAllCityInfoView(String[] allParams)
+	{
+		cityInfoView.updateAll(allParams);
+	}
+	
+	public void setCityName(int cityNumber, String cityName)
+	{
+		((CityView)field[cityNumber]).setCityName(cityName);
+	}
+	
+	/**
+	 * Zmiana dostepnosci wymienionych przyciskow
+	 * @param city przycisk buyCityButton
+	 * @param house przycisk buyHouseButton
+	 * @param hotel przycisk buyHotelButton
+	 */
+	public void setBuyButtonsEnabled(boolean city, boolean house, boolean hotel)
+	{
+		buyCityButton.setEnabled(city);
+		buyHouseButton.setEnabled(house);
+		buyHotelButton.setEnabled(hotel);
+	}
+	
+	/**
+	 * Ustawianie koloru pola dla pionkow, aby rozroznic dzielnice
+	 * @param fieldNumber numer pola
+	 * @param district numer dzielincy
+	 */
+	public void setFieldCheckerPanelColor(int fieldNumber, int district)
+	{
+		field[fieldNumber].checkerPanel.setBackground(districtColors[district-1]);
+	}
+	
+	/**
+	 * Dodawanie domu do miasta
+	 * @param cityNumber numer miasta
+	 */
+	public void addHouseToCity(int cityNumber)
+	{	
+		((CityView)field[cityNumber]).addHouse();
+		field[cityNumber].revalidate();
+	}
+	
+	/**
+	 * Dodawanie hotelu do miasta
+	 * @param cityNumber numer miasta
+	 */
+	public void addHotelToCity(int cityNumber)
+	{	
+		((CityView)field[cityNumber]).addHotel();
+		field[cityNumber].revalidate();
+	}
+	
+	/**
+	 * Wylaczenie wszystkich przyciskow
+	 */
+	public void allButtonsEnableFalse()
+	{
+		rollDiceButton.setEnabled(false);
+		endTurnButton.setEnabled(false);
+		buyCityButton.setEnabled(false);
+		buyHotelButton.setEnabled(false);
+		buyHouseButton.setEnabled(false);
 	}
 }

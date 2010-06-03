@@ -2,8 +2,8 @@ package view;
 
 import javax.swing.*;
 
-import controller.ExtendEvent;
-import controller.ExtendMouseMotion;
+import controller.events.ExtendEvent;
+import controller.listeners.ExtendHideCityInfoListener;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -51,13 +51,12 @@ public final class BoardView extends JFrame
 	private BlockingQueue<ExtendEvent> queue;
 	
 	/**
-	 * 
 	 * Konstruktor klasy Board
-	 * 
+	 * @param queue kolejka blokujaca
 	 */
-	BoardView(BlockingQueue<ExtendEvent> _queue)
+	BoardView(BlockingQueue<ExtendEvent> queue)
 	{
-		queue = _queue;
+		this.queue = queue;
 		Toolkit toolkit = getToolkit();
 		Dimension dimension = toolkit.getScreenSize();
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -85,7 +84,7 @@ public final class BoardView extends JFrame
 		rightPanel = new JPanel();
 		gamePanel = new ImagePanel("data/mainbg.jpg");
 		gamePanel.setName("gamePanel");
-		gamePanel.addMouseMotionListener(new ExtendMouseMotion(queue));
+		gamePanel.addMouseMotionListener(new ExtendHideCityInfoListener(queue));
 		topPanel.setPreferredSize(new Dimension(boardWidth, boardHeight / 8));
 		bottomPanel.setPreferredSize(new Dimension(boardWidth, boardHeight / 8));
 		leftPanel.setPreferredSize(new Dimension(boardWidth / 8, boardHeight));
@@ -111,51 +110,65 @@ public final class BoardView extends JFrame
 	}
 	
 	/**
-	 * 
 	 * Funkcja umozliwiająca dodanie komponentu do gornego panelu
-	 * 
+	 * @param comp dodwany komponent
 	 */
-	public void addToTopPanel(Component comp) {	topPanel.add(comp);	}
+	public void addToTopPanel(Component comp)
+	{
+		topPanel.add(comp);	
+	}
 
 	/**
-	 * 
 	 * Funkcja umozliwiająca dodanie komponentu do dolnego panelu
-	 * 
+	 * @param comp dodwany komponent
 	 */
-	public void addToBottomPanel(Component comp) { bottomPanel.add(comp); }
+	public void addToBottomPanel(Component comp) 
+	{
+		bottomPanel.add(comp); 
+	}
 
 	/**
-	 * 
 	 * Funkcja umozliwiająca dodanie komponentu do lewego panelu
-	 * 
+	 * @param comp dodwany komponent
 	 */
-	public void addToLeftPanel(Component comp) { leftPanel.add(comp); }
+	public void addToLeftPanel(Component comp) 
+	{ 
+		leftPanel.add(comp); 
+	}
 	
 	/**
-	 * 
 	 * Funkcja umozliwiająca dodanie komponentu do prawego panelu
-	 * 
+	 * @param comp dodwany komponent
 	 */
-	public void addToRightPanel(Component comp) { rightPanel.add(comp); }
+	public void addToRightPanel(Component comp) 
+	{ 
+		rightPanel.add(comp); 
+	}
 	
 	/**
-	 * 
 	 * Funkcja umozliwiająca dodanie komponentu do panelu gry
-	 * 
+	 * @param comp dodwany komponent
 	 */
-	public void addToGamePanel(Component comp) { gamePanel.add(comp); }
+	public void addToGamePanel(Component comp)
+	{ 
+		gamePanel.add(comp); 
+	}
 	
 	/**
-	 * 
 	 * Funkcja umozliwiająca pobranie szerokosci okna
-	 * 
+	 * @reuturn boarWidth szerokosc okna
 	 */
-	int getBoardWidth() { return boardWidth; }
+	int getBoardWidth() 
+	{ 
+		return boardWidth; 
+	}
 	
 	/**
-	 * 
 	 * Funkcja umozliwiająca pobranie wysokosci okna
-	 * 
+	 * @return boardHeight wysokosc okna
 	 */
-	int getBoardHeight() { return boardHeight; }
+	int getBoardHeight() 
+	{
+		return boardHeight; 
+	}
 }

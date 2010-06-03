@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Random;
+
 /**
  * 
  * Klasa do obsługi pól specjalnych takich jak:
@@ -12,18 +14,25 @@ public final class SpecialFieldModel extends FieldModel
 {
 	/** stała opisująca status pola jako szansa*/
 	protected static final short CHANCE = 0;
+	
 	/** stała opisująca status pola jako ryzyko*/
 	protected static final short RISK = 1;
+	
 	/** stała opisująca status pola jako opłata*/
 	protected static final short FEE = 2;
+	
 	/** stała opisująca status pola jako pójście do więzienia*/
 	protected static final short GO_TO_JAIL = 3;
+	
 	/** stała opisująca status pola jako bonus za przejście przez start*/
 	protected static final short START_BONUS = 4;
+	
 	/** stała opisująca status pola jako zwykłe pole */
 	protected static final short NOTHING = 5;
+	
 	/** przechowuje stan pola */
 	private short status;
+	
 	/** przechowuje wartość dla pola */
 	private int value;
 	
@@ -63,5 +72,50 @@ public final class SpecialFieldModel extends FieldModel
 	 * @return wartość pola
 	 */
 	public int getValue() { return value; }
+	
+	/**
+	 * Funkcja wywolywana podczas placenia gdy gracz stanie na specjalnym polu
+	 * @param value wartosc pomocnicza
+	 * @return String[] tablica z kwota do zaplaty lub kwota zysku oraz komunikatem do wyswietlenia
+	 */
+	public String[] pay(int value)
+	{
+		Random rnd = new Random();
+		String[] tmpTable = new String[2];
+		int forPay = 0;
+		if (status == CHANCE)
+		{
+			forPay = rnd.nextInt(300) + 150;
+			tmpTable[1] = new String("Stanąłeś na szanse! Dostajesz w prezencie " + forPay + " MMM!");
+		}
+		else if (status == RISK)
+		{
+			forPay = rnd.nextInt(300) + 150;
+			tmpTable[1] = new String("Stanąłeś na ryzyko! Musisz zapłacić " + forPay + " MMM!");
+			forPay = -forPay;
+		}
+		else if (status == FEE)
+		{
+			forPay = -200;
+			tmpTable[1] = new String("Musisz zapłacić podatek dochodowy wysokości: " + forPay + " MMM!");
+		}
+		else if (status == START_BONUS)
+		{
+			forPay = 1000;
+			tmpTable[1] = new String("Stanąłeś na start! Dostajesz wypłatę wysokości " + forPay + " MMM!");
+		}
+		else if (status == GO_TO_JAIL)
+		{
+			forPay = rnd.nextInt(3) + 1;
+			tmpTable[1] = new String("GO_TO_JAIL");
+		}
+		else
+		{
+			forPay = 0;
+			tmpTable[1] = new String("");
+		}
+		tmpTable[0] = new String(String.valueOf(forPay));
+		return tmpTable;
+	}
 	
 }

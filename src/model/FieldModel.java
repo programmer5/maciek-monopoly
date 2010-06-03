@@ -39,4 +39,17 @@ public class FieldModel
 	 * @return nazwę pola
 	 */
 	public String getFieldName() { return fieldName; }
+	
+	/**
+	 * Funkcja wywolywana podczas placenia
+	 * @param value wartosc pomocnicza
+	 * @return String[] tablica z kwota do zaplaty oraz komunikatem do wyswietlenia
+	 */
+	public String[] pay(int value)
+	{
+		String[] tmpTable = new String[2];
+		tmpTable[0] = new String("0");
+		tmpTable[1] = new String("0");
+		return tmpTable;
+	}
 }

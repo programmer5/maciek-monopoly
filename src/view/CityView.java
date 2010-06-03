@@ -3,6 +3,7 @@ package view;
 import java.awt.Color;
 import java.awt.Dimension;
 
+import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -42,6 +43,10 @@ public final class CityView extends FieldView
 		add(cityNamePanel);
 		estatePanel = new JPanel();
 		estatePanel.setBackground(Color.yellow);
+		estatePanel.setMinimumSize(new Dimension(BoardView.boardWidth / 8 + 15, BoardView.boardHeight / 24));
+		estatePanel.setPreferredSize(new Dimension(BoardView.boardWidth / 8 + 15, BoardView.boardHeight / 24));
+		estatePanel.setMaximumSize(new Dimension(BoardView.boardWidth / 8 + 15, BoardView.boardHeight / 24));
+		estatePanel.setLayout(new BoxLayout(estatePanel, BoxLayout.X_AXIS));
 		add(estatePanel);
 	}
 	
@@ -53,5 +58,15 @@ public final class CityView extends FieldView
 	{
 		cityNameLabel.setText(newName);
 	}
-
+	
+	public void addHouse()
+	{
+		estatePanel.add(new ImagePanel("data/house.jpg"));
+	}
+	
+	public void addHotel()
+	{
+		estatePanel.removeAll();
+		estatePanel.add(new ImagePanel("data/hotel.jpg"));
+	}
 }
