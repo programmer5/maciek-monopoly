@@ -6,8 +6,8 @@ import pl.edu.pw.proz.msulek.controller.Controller;
 import pl.edu.pw.proz.msulek.model.CityModel;
 import pl.edu.pw.proz.msulek.model.Model;
 import pl.edu.pw.proz.msulek.model.TrainModel;
+import pl.edu.pw.proz.msulek.view.ViewChanger;
 
-import view.ViewChanger;
 
 /**
  * Akcja rzutu kostka

@@ -4,7 +4,7 @@ import pl.edu.pw.proz.msulek.controller.Controller;
 import pl.edu.pw.proz.msulek.model.CityModel;
 import pl.edu.pw.proz.msulek.model.Model;
 import pl.edu.pw.proz.msulek.model.TrainModel;
-import view.ViewChanger;
+import pl.edu.pw.proz.msulek.view.ViewChanger;
 
 /**
  * Klasa akcji wywolywanej przy zakupie miasta

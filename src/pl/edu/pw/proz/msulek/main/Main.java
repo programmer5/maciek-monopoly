@@ -5,7 +5,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 import pl.edu.pw.proz.msulek.controller.*;
 import pl.edu.pw.proz.msulek.controller.events.ExtendEvent;
 import pl.edu.pw.proz.msulek.model.*;
-import view.*;
+import pl.edu.pw.proz.msulek.view.*;
 
 /**
  * 

@@ -6,8 +6,8 @@ import java.util.concurrent.BlockingQueue;
 import pl.edu.pw.proz.msulek.controller.actions.*;
 import pl.edu.pw.proz.msulek.controller.events.*;
 import pl.edu.pw.proz.msulek.model.*;
+import pl.edu.pw.proz.msulek.view.*;
 
-import view.*;
 
 /**
  * Klasa kontrolera

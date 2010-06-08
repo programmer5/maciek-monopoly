@@ -1,4 +1,4 @@
-package view;
+package pl.edu.pw.proz.msulek.view;
 
 import javax.swing.*;
 

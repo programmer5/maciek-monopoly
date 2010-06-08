@@ -1,7 +1,7 @@
 package pl.edu.pw.proz.msulek.controller.actions;
 
 import pl.edu.pw.proz.msulek.controller.Controller;
-import view.ViewChanger;
+import pl.edu.pw.proz.msulek.view.ViewChanger;
 
 /**
  * Akcja zamykania okna nowej gry

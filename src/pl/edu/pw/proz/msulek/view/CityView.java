@@ -1,4 +1,4 @@
-package view;
+package pl.edu.pw.proz.msulek.view;
 
 import java.awt.Color;
 import java.awt.Dimension;

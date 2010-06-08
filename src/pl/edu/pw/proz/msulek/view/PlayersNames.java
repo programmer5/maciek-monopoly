@@ -1,7 +1,7 @@
 /**
  * 
  */
-package view;
+package pl.edu.pw.proz.msulek.view;
 
 /**
  * Enum umozliwiajacy trzymanie nazw graczy
