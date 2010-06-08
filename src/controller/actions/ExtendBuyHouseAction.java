@@ -33,16 +33,16 @@ public class ExtendBuyHouseAction extends ExtendAction
 		ViewChanger mainViewChanger = controller.getViewChanger();
 		mainViewChanger.setBuyButtonsEnabled(false, false, false);
 		int actPlayer = mainModel.getCurrentPlayer();
-		int playerSaldo = mainModel.players[actPlayer].getSaldo();
-		int fieldNumber = mainModel.checkers[actPlayer].getFieldNumber();
-		int cost = ((CityModel)mainModel.field[fieldNumber]).getHouseCost();
+		int playerSaldo = mainModel.getPlayer(actPlayer).getSaldo();
+		int fieldNumber = mainModel.getChecker(actPlayer).getFieldNumber();
+		int cost = ((CityModel)mainModel.getField(fieldNumber)).getHouseCost();
 		if (playerSaldo < cost)
 		{
 			mainViewChanger.showGameDialog("Nie stać Cię na zakup domu!", "Ups...");
 			return;
 		}
-		mainModel.players[actPlayer].changeSaldo(cost);
-		((CityModel)mainModel.field[fieldNumber]).incEstateNumber();
+		mainModel.getPlayer(actPlayer).changeSaldo(cost);
+		((CityModel)mainModel.getField(fieldNumber)).incEstateNumber();
 		mainViewChanger.setPlayerMoney(actPlayer, playerSaldo - cost);
 		mainViewChanger.addHouseToCity(fieldNumber);
 		mainViewChanger.showGameDialog("Kupiłeś dom!", "Nieźle...");

@@ -32,7 +32,7 @@ public class ExtendEndTurnAction extends ExtendAction
 		ViewChanger mainViewChanger = controller.getViewChanger();
 		for (int i = 0; i < mainModel.getPlayerNumber(); ++i)
 		{
-			if (mainModel.players[i].getSaldo() < 0)
+			if (mainModel.getPlayer(i).getSaldo() < 0)
 			{
 				//TODO Konczenie gry
 				//endGame();

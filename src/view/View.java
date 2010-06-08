@@ -86,6 +86,9 @@ public class View
 	/** kolory dzielnic */
 	private Color[] districtColors;
 	
+	/** aktualne pole */
+	private int actField[];
+	
 	/**
 	 * Konstruktor klasy View
 	 * @param queue kolejka blokujaca
@@ -179,6 +182,8 @@ public class View
 		districtColors = new Color[10];
 		//inicjalizacja pionkow
 		checkers = new ImagePanel[4];
+		actField = new int[1];
+		actField[0] = 0;
 	}
 	
 	/**
@@ -193,28 +198,28 @@ public class View
 			{
 				mainboard.addToLeftPanel(field[i]);
 				field[i].setName(String.valueOf(i));
-				field[i].addMouseMotionListener(new ExtendMouseMotion(queue, i));
+				field[i].addMouseMotionListener(new ExtendMouseMotion(queue, i, actField));
 			}
 		for (int i = 7; i <= 14; ++i)
 			{
 				mainboard.addToTopPanel(field[i]);
 				field[i].setName(String.valueOf(i));
-				field[i].addMouseMotionListener(new ExtendMouseMotion(queue, i));
+				field[i].addMouseMotionListener(new ExtendMouseMotion(queue, i, actField));
 			}
 		for (int i = 15; i <= 20; ++i)
 			{
 				mainboard.addToRightPanel(field[i]);
 				field[i].setName(String.valueOf(i));
-				field[i].addMouseMotionListener(new ExtendMouseMotion((queue), i));
+				field[i].addMouseMotionListener(new ExtendMouseMotion((queue), i, actField));
 			}
 		mainboard.addToBottomPanel(field[0]);
 		field[0].setName(String.valueOf(0));
-		field[0].addMouseMotionListener(new ExtendMouseMotion(queue, 0));
+		field[0].addMouseMotionListener(new ExtendMouseMotion(queue, 0, actField));
 		for (int i = 27; i >= 21; --i) 
 			{
 				mainboard.addToBottomPanel(field[i]);
 				field[i].setName(String.valueOf(i));
-				field[i].addMouseMotionListener(new ExtendMouseMotion(queue, i));
+				field[i].addMouseMotionListener(new ExtendMouseMotion(queue, i, actField));
 			}
 		menuPanel.setLayout(new GridLayout(1, 3));
 		for (int i = 0; i < 4; ++i) mainboard.addToGamePanel(playerPanel[i]);
@@ -501,5 +506,14 @@ public class View
 		buyCityButton.setEnabled(false);
 		buyHotelButton.setEnabled(false);
 		buyHouseButton.setEnabled(false);
+	}
+	
+	/**
+	 * Pobranie aktualnego pola
+	 * @return actField aktualne pole najechane myszka
+	 */
+	public int getActField()
+	{
+		return actField[0];
 	}
 }

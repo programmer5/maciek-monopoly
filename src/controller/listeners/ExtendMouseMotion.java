@@ -5,7 +5,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.util.concurrent.BlockingQueue;
 
-import controller.Controller;
 import controller.events.ExtendEvent;
 import controller.events.ExtendMouseEvent;
 
@@ -23,15 +22,19 @@ public class ExtendMouseMotion implements MouseMotionListener
 	/** pole na ktore najechano */
 	private int actField;
 	
+	/** obiekt przechowujacy aktualne pole w widoku */
+	private int actFieldGlobal[];
+	
 	/**
 	 * Konstruktor klasy ExtendMouseMotion
 	 * @param queue kolejka blokujaca
 	 * @param actField numer pola dla listenera
 	 */
-	public ExtendMouseMotion(BlockingQueue<ExtendEvent> queue, final int actField)
+	public ExtendMouseMotion(BlockingQueue<ExtendEvent> queue, final int actField, int actFieldGlobal[])
 	{
 		this.queue = queue;
 		this.actField = actField;
+		this.actFieldGlobal = actFieldGlobal;
 	}
 
 	@Override
@@ -46,7 +49,7 @@ public class ExtendMouseMotion implements MouseMotionListener
 		try 
 		{
 			queue.put(new ExtendMouseEvent());
-			Controller.setActField(actField);
+			actFieldGlobal[0] = actField;
 		} 
 		catch (InterruptedException e)
 		{

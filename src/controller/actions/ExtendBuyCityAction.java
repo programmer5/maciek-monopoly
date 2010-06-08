@@ -33,27 +33,27 @@ public class ExtendBuyCityAction extends ExtendAction
 		Model mainModel = controller.getModel();
 		ViewChanger mainViewChanger = controller.getViewChanger();
 		int actPlayer = mainModel.getCurrentPlayer();
-		int fieldNumber = mainModel.checkers[actPlayer].getFieldNumber();
-		int playerSaldo = mainModel.players[actPlayer].getSaldo();
+		int fieldNumber = mainModel.getChecker(actPlayer).getFieldNumber();
+		int playerSaldo = mainModel.getPlayer(actPlayer).getSaldo();
 		int cost = 0;
-		if (mainModel.field[fieldNumber] instanceof CityModel)
+		if (mainModel.getField(fieldNumber) instanceof CityModel)
 		{
-			cost = ((CityModel)mainModel.field[fieldNumber]).getCityPrice();
+			cost = ((CityModel)mainModel.getField(fieldNumber)).getCityPrice();
 		}
 		else
 		{
-			cost = ((TrainModel)mainModel.field[fieldNumber]).getTrainCost();
+			cost = ((TrainModel)mainModel.getField(fieldNumber)).getTrainCost();
 		}
 		if (playerSaldo < cost)
 		{
-			mainViewChanger.showGameDialog("Masz za mało pieniędzy dokonać zakupu!", "Niestety...");
+			mainViewChanger.showGameDialog("Masz za mało pieniędzy aby dokonać zakupu!", "Niestety...");
 		}
 		else  
 		{
 			mainViewChanger.showGameDialog("Dokonałeś nowego zakupu!", "Gratulacje!");
 			mainViewChanger.changeBuyCityButtonState(false);
 			playerSaldo = playerSaldo - cost;
-			mainModel.players[actPlayer].setSaldo(playerSaldo);
+			mainModel.getPlayer(actPlayer).setSaldo(playerSaldo);
 			mainModel.setCityOwner(fieldNumber, (short) (actPlayer + 1));
 			mainViewChanger.setPlayerMoney(actPlayer, playerSaldo);
 		}

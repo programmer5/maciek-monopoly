@@ -11,16 +11,16 @@ import java.io.*;
 public class Model
 {
 	/** zbior pol */
-	public FieldModel field[];
+	private FieldModel fields[];
 	
 	/** liczba graczy */
 	private int playerNumber;
 	
 	/** zbior graczy */
-	public PlayerModel players[];
+	private PlayerModel players[];
 	
 	/** zbior pionkow */
-	public CheckerModel checkers[];
+	private CheckerModel checkers[];
 	
 	/** aktualny gracz */
 	private int currentPlayer;
@@ -30,7 +30,7 @@ public class Model
 	 */
 	public Model()
 	{
-		field = new FieldModel[30];
+		fields = new FieldModel[30];
 		players = new PlayerModel[4];
 		checkers = new CheckerModel[4];
 		playerNumber = 0;
@@ -72,7 +72,7 @@ public class Model
 		    	}
 		    	tmpCity = new CityModel();
 		    	tmpCity.updateAll(tmpCityName, params);
-		    	field[tmpCityNumber] = tmpCity;
+		    	fields[tmpCityNumber] = tmpCity;
 		    }
 		    fCities.close();
 	    	if (readLine != 165) throw new Exception("Błąd ilości lini");
@@ -83,25 +83,56 @@ public class Model
 			System.exit(0);
 		}
 		//ladowanie pol specjalnych
-		field[0] = new SpecialFieldModel("Start", SpecialFieldModel.START_BONUS, 1500);
-		field[3] = new SpecialFieldModel("Szansa", SpecialFieldModel.CHANCE);
-		field[5] = new TrainModel("Koleje zachodnie");
-		field[7] = new SpecialFieldModel("GoToJail", SpecialFieldModel.GO_TO_JAIL);
-		field[10] = new SpecialFieldModel("Ryzyko", SpecialFieldModel.RISK);
-		field[12] = new TrainModel("Koleje północne");
-		field[14] = new SpecialFieldModel("Parking", SpecialFieldModel.NOTHING);
-		field[16] = new SpecialFieldModel("Szansa", SpecialFieldModel.CHANCE);
-		field[18] = new TrainModel("Koleje wschodnie");
-		field[19] = new SpecialFieldModel("Płacisz podatek", SpecialFieldModel.FEE, 250);
-		field[21] = new SpecialFieldModel("Odwiedasz więzienie", SpecialFieldModel.NOTHING);
-		field[24] = new TrainModel("Koleje południowe");
-		field[26] = new SpecialFieldModel("Ryzyko", SpecialFieldModel.RISK);
+		fields[0] = new SpecialFieldModel("Start", SpecialFieldModel.START_BONUS, 1500);
+		fields[3] = new SpecialFieldModel("Szansa", SpecialFieldModel.CHANCE);
+		fields[5] = new TrainModel("Koleje zachodnie");
+		fields[7] = new SpecialFieldModel("GoToJail", SpecialFieldModel.GO_TO_JAIL);
+		fields[10] = new SpecialFieldModel("Ryzyko", SpecialFieldModel.RISK);
+		fields[12] = new TrainModel("Koleje północne");
+		fields[14] = new SpecialFieldModel("Parking", SpecialFieldModel.NOTHING);
+		fields[16] = new SpecialFieldModel("Szansa", SpecialFieldModel.CHANCE);
+		fields[18] = new TrainModel("Koleje wschodnie");
+		fields[19] = new SpecialFieldModel("Płacisz podatek", SpecialFieldModel.FEE, 250);
+		fields[21] = new SpecialFieldModel("Odwiedasz więzienie", SpecialFieldModel.NOTHING);
+		fields[24] = new TrainModel("Koleje południowe");
+		fields[26] = new SpecialFieldModel("Ryzyko", SpecialFieldModel.RISK);
 		for (int i = 0; i < 4; ++i) 
 		{
 			checkers[i] = new CheckerModel();
 			players[i] = new PlayerModel();
 		}
 	}
+	
+	/** 
+	 * Pobranie gracza
+	 * @param playerNumber numer gracza
+	 * @return player gracz
+	 */
+	public PlayerModel getPlayer(int playerNumber)
+	{
+		return players[playerNumber];
+	}
+	
+	/**
+	 * Pobranie obiektu pionka
+	 * @param checkerNumber numer pionka
+	 * @return checker pionek
+	 */
+	public CheckerModel getChecker(int checkerNumber)
+	{
+		return checkers[checkerNumber];
+	}
+	
+	/**
+	 * Pobranie pola
+	 * @param fieldNumber numer pola
+	 * @return field pole
+	 */
+	public FieldModel getField(int fieldNumber)
+	{
+		return fields[fieldNumber];
+	}
+	
 	
 	/**
 	 * Pobranie liczby graczy
@@ -164,14 +195,14 @@ public class Model
 	  */
 	 public short whoIsThisCity(int cityNumber)
 	 {
-		 if (field[cityNumber] instanceof CityModel)
+		 if (fields[cityNumber] instanceof CityModel)
 		 {
-			 short forReturn = ((CityModel)field[cityNumber]).getCityStatus();
+			 short forReturn = ((CityModel)fields[cityNumber]).getCityStatus();
 			 return forReturn;
 		 }
-		 else if (field[cityNumber] instanceof TrainModel)
+		 else if (fields[cityNumber] instanceof TrainModel)
 		 {
-			 short forReturn = ((TrainModel)field[cityNumber]).getOwner();
+			 short forReturn = ((TrainModel)fields[cityNumber]).getOwner();
 			 return forReturn;
 		 }
 		 return -1;
@@ -179,13 +210,13 @@ public class Model
 	 
 	 public void setCityOwner(int cityNumber, short owner)
 	 {
-		 if (field[cityNumber] instanceof CityModel)
+		 if (fields[cityNumber] instanceof CityModel)
 		 {
-			 ((CityModel)field[cityNumber]).setOwner(owner);
+			 ((CityModel)fields[cityNumber]).setOwner(owner);
 		 }
-		 else if (field[cityNumber] instanceof TrainModel)
+		 else if (fields[cityNumber] instanceof TrainModel)
 		 {
-			 ((TrainModel)field[cityNumber]).setOwner(owner);
+			 ((TrainModel)fields[cityNumber]).setOwner(owner);
 		 }
 	 }
 	 
@@ -198,14 +229,14 @@ public class Model
 	 public int playerHasDistrict(int fieldNumber, short who)
 	 {
 		 int number = 1;
-		 if (field[fieldNumber] instanceof CityModel)
+		 if (fields[fieldNumber] instanceof CityModel)
 		 {
-			 int searchDistrict = ((CityModel)field[fieldNumber]).getDistrict();
+			 int searchDistrict = ((CityModel)fields[fieldNumber]).getDistrict();
 			 for (int i = 0; i < 28; ++i)
 			 {
-				 if (field[i] instanceof CityModel)
+				 if (fields[i] instanceof CityModel)
 				 {
-					 if (((CityModel)field[i]).getDistrict() == searchDistrict && ((CityModel)field[i]).getOwner() != who)
+					 if (((CityModel)fields[i]).getDistrict() == searchDistrict && ((CityModel)fields[i]).getOwner() != who)
 					 {
 						return 0; 
 					 }
@@ -213,13 +244,13 @@ public class Model
 			 }
 			 return 1;
 		 }
-		 else if (field[fieldNumber] instanceof TrainModel)
+		 else if (fields[fieldNumber] instanceof TrainModel)
 		 {
 			 for (int i = 0; i < 28; ++i)
 			 {
-				 if (field[i] instanceof TrainModel)
+				 if (fields[i] instanceof TrainModel)
 				 {
-					 if (((TrainModel)field[i]).getOwner() == who)
+					 if (((TrainModel)fields[i]).getOwner() == who)
 					 {
 						++number;
 					 }

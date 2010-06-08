@@ -32,11 +32,11 @@ public class ExtendMouseAction extends ExtendAction
 	@Override
 	public void perform() 
 	{
-		this.actField = Controller.getActField();
 		Model mainModel = controller.getModel();
 		ViewChanger mainViewChanger = controller.getViewChanger();
-		if (mainModel.field[actField] instanceof CityModel == false) return;
-		String[] tmpParams = ((CityModel)mainModel.field[actField]).getAllParams();
+		this.actField = mainViewChanger.getActField();
+		if (mainModel.getField(actField) instanceof CityModel == false) return;
+		String[] tmpParams = ((CityModel)mainModel.getField(actField)).getAllParams();
 		mainViewChanger.updateAllCityInfoView(tmpParams);
 		mainViewChanger.setVisibleCityInfoView(true);
 	}

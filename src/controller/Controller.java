@@ -16,16 +16,13 @@ import model.*;
 public class Controller
 {
 	/** glowny model */
-	private static Model mainModel;
+	private Model mainModel;
 	
 	/** glowny widok */
-	private static ViewChanger mainViewChanger;
+	private ViewChanger mainViewChanger;
 	
 	/** mapa par */
 	private final HashMap<Class<? extends ExtendEvent>, ExtendAction> map;;
-	
-	/** aktualny element mapy */
-	private static int actField;
 	
 	/** kolejka blokujaca */
 	private BlockingQueue<ExtendEvent> queue;
@@ -88,24 +85,6 @@ public class Controller
 	}
 	
 	/**
-	 * Pobranie numeru aktualnego panelu
-	 * @return actField aktualne pole
-	 */
-	public static int getActField()
-	{
-		return actField;
-	}
-	
-	/**
-	 * Ustawienie numeru aktualnego panelu
-	 * @param newActField nowa aktualne pole
-	 */
-	public static void setActField(int newActField)
-	{
-		actField = newActField;
-	}
-	
-	/**
 	 * tworzy mape
 	 * @throws SecurityException
 	 * @throws NoSuchMethodException
@@ -129,10 +108,16 @@ public class Controller
 	
 	//FUNKCJE DLA OBIEKTOW		
 	/** konczenie gry */
-	public static void endGame()
+	public void endGame()
 	{
 		mainViewChanger.allButtonsEnableFalse();
 		mainViewChanger.showGameDialog("Saldo jednego z graczy jest mniejsze od zera, co powoduje, że dalsza gra musi być przerwana! Gratulacje dla zwycięzcy!", "Koniec GRY!");
+	}
+	
+	public void newGame()
+	{
+		mainViewChanger = new ViewChanger(new View(queue));
+		mainModel = new Model();
 	}
 	
 	/**
@@ -145,10 +130,10 @@ public class Controller
 	{
 		for (int i = 0; i < 28; ++i)
 		{
-			if (mainModel.field[i] instanceof CityModel)
+			if (mainModel.getField(i) instanceof CityModel)
 			{
-				mainViewChanger.setCityName(i, mainModel.field[i].getFieldName());
-				mainViewChanger.setFieldCheckerPanelColor(i, ((CityModel)mainModel.field[i]).getDistrict());
+				mainViewChanger.setCityName(i, mainModel.getField(i).getFieldName());
+				mainViewChanger.setFieldCheckerPanelColor(i, ((CityModel)mainModel.getField(i)).getDistrict());
 			}
 		}
 	}

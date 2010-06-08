@@ -29,16 +29,16 @@ public class ExtendBuyHotelAction extends ExtendAction
 		ViewChanger mainViewChanger = controller.getViewChanger();
 		mainViewChanger.setBuyButtonsEnabled(false, false, false);
 		int actPlayer = mainModel.getCurrentPlayer();
-		int playerSaldo = mainModel.players[actPlayer].getSaldo();
-		int fieldNumber = mainModel.checkers[actPlayer].getFieldNumber();
-		int cost = ((CityModel)mainModel.field[fieldNumber]).getHotelCost();
+		int playerSaldo = mainModel.getPlayer(actPlayer).getSaldo();
+		int fieldNumber = mainModel.getChecker(actPlayer).getFieldNumber();
+		int cost = ((CityModel)mainModel.getField(fieldNumber)).getHotelCost();
 		if (playerSaldo < cost)
 		{
 			mainViewChanger.showGameDialog("Nie stać Cię na zakup hotelu!", "Ups...");
 			return;
 		}
-		mainModel.players[actPlayer].changeSaldo(cost);
-		((CityModel)mainModel.field[fieldNumber]).incEstateNumber();
+		mainModel.getPlayer(actPlayer).changeSaldo(cost);
+		((CityModel)mainModel.getField(fieldNumber)).incEstateNumber();
 		mainViewChanger.setPlayerMoney(actPlayer, playerSaldo - cost);
 		mainViewChanger.addHotelToCity(fieldNumber);
 		mainViewChanger.showGameDialog("Kupiłeś hotel!", "Imponujące!");

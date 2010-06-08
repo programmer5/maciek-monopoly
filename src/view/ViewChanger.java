@@ -245,4 +245,14 @@ public class ViewChanger
 	{
 		mainView.allButtonsEnableFalse();
 	}
+	
+	/**
+	 * Pobranie numeru pola najechanego myszka
+	 * @return actField aktualne pole
+	 */
+	public int getActField()
+	{
+		return mainView.getActField();
+	}
+	
 }
