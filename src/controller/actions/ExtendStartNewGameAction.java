@@ -6,8 +6,8 @@ import view.ViewChanger;
 
 /**
  * Rozpoczecie nowej gry
- * @author programmer
- *
+ * 
+ * @author Maciej Sulek
  */
 public class ExtendStartNewGameAction extends ExtendAction 
 {
@@ -16,6 +16,7 @@ public class ExtendStartNewGameAction extends ExtendAction
 	
 	/**
 	 * Konstruktor klasy ExtendStartNewGameAction
+	 * 
 	 * @param controller kontroler gry
 	 */
 	public ExtendStartNewGameAction(final Controller controller)
@@ -23,6 +24,9 @@ public class ExtendStartNewGameAction extends ExtendAction
 		this.controller = controller;
 	}
 	
+	/**
+	 * Funkcja wykonujaca akcje
+	 */
 	@Override
 	public void perform()
 	{

@@ -10,6 +10,7 @@ import model.*;
 
 /**
  * Klasa kontrolera
+ * 
  * @author Maciej Sulek
  */
 
@@ -29,15 +30,12 @@ public class Controller
 	
 	/**
 	 * Konstruktor klasy Controller
+	 * 
 	 * @param queue kolejka blokujaca
 	 * @param viewChanger klasa umozliwiajaca zmiany w view
 	 * @param model model programu
-	 * @throws SecurityException wyjatek bezpieczenstwa
-	 * @throws NoSuchMethodException wyjatek nieodnalezionej metody
-	 * @throws ClassNotFoundException wyjatek nieznalezionej klasy
 	 */
 	public Controller(BlockingQueue<ExtendEvent> queue, ViewChanger viewChanger, Model model)
-		throws SecurityException, NoSuchMethodException, ClassNotFoundException
 	{
 		mainModel = model;
 		mainViewChanger = viewChanger;
@@ -47,6 +45,9 @@ public class Controller
 		loadData();
 	}
 	
+	/**
+	 * Funkcja pobierajaca zdarzenia z kolejki
+	 */
 	public void work()
 	{
 		while(true)
@@ -67,7 +68,8 @@ public class Controller
 	}
 	
 	/** 
-	 * Pobranie modelu
+	 * Pobieranie modelu
+	 * 
 	 * @return mainModel model
 	 */
 	public Model getModel()
@@ -76,7 +78,8 @@ public class Controller
 	}
 	
 	/**
-	 * Pobranie fasady widoku
+	 * Pobieranie fasady widoku
+	 * 
 	 * @return mainViewChanger fasada widoku
 	 */
 	public ViewChanger getViewChanger()
@@ -85,12 +88,9 @@ public class Controller
 	}
 	
 	/**
-	 * tworzy mape
-	 * @throws SecurityException
-	 * @throws NoSuchMethodException
+	 * Tworzy mape
 	 */
 	public void createMap() 
-	throws SecurityException, NoSuchMethodException
 	{
 		map.put(ExtendNewGameEvent.class, new ExtendNewGameAction(this));
 		map.put(ExtendMouseEvent.class, new ExtendMouseAction(this));
@@ -106,27 +106,19 @@ public class Controller
 		map.put(ExtendCloseCityInfoEvent.class, new ExtendCloseCityInfoAction(this));
 	}
 	
-	//FUNKCJE DLA OBIEKTOW		
-	/** konczenie gry */
+	/** 
+	 * Konczenie gry 
+	 */
 	public void endGame()
 	{
 		mainViewChanger.allButtonsEnableFalse();
 		mainViewChanger.showGameDialog("Saldo jednego z graczy jest mniejsze od zera, co powoduje, że dalsza gra musi być przerwana! Gratulacje dla zwycięzcy!", "Koniec GRY!");
 	}
 	
-	public void newGame()
-	{
-		mainViewChanger = new ViewChanger(new View(queue));
-		mainModel = new Model();
-	}
-	
 	/**
-	 * ladowanie nazw miast i danych o nich z modelu do widoku
-	 * @throws NoSuchMethodException 
-	 * @throws SecurityException 
+	 * Ladowanie nazw miast i danych o nich z modelu do widoku
 	 */
 	public void loadData()
-	throws SecurityException, NoSuchMethodException
 	{
 		for (int i = 0; i < 28; ++i)
 		{

@@ -38,9 +38,5 @@ public class Main
 		{
 			e.printStackTrace();
 		}
-		catch (NoSuchMethodException e) 
-		{
-			e.printStackTrace();
-		}
 	}
 }

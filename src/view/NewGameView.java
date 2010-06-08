@@ -15,12 +15,10 @@ import controller.listeners.ExtendCloseNewGameListener;
 import controller.listeners.ExtendStartNewGameListener;
 
 /**
- * 
  * Klasa okna rozpoczynajacego nowa gre
+ * 
  * @author Maciej Sulek
- *
  */
-
 public class NewGameView extends JFrame 
 {
 	/** wygenerowane id */
@@ -42,7 +40,7 @@ public class NewGameView extends JFrame
 	private BlockingQueue<ExtendEvent> queue;
 	
 	/** 
-	 * konstruktor klasy NewGameView()
+	 * Konstruktor klasy NewGameView()
 	 */
 	public NewGameView(BlockingQueue<ExtendEvent> _queue)
 	{
@@ -77,7 +75,9 @@ public class NewGameView extends JFrame
 	}
 	
 	/**
-	 * @return the firstPlayer name
+	 * Pobieranie nazwy pierwszego gracza
+	 * 
+	 * @return firstPlayer nazwa pierwszego gracza 
 	 */
 	public String getFirstPlayer() 
 	{
@@ -85,7 +85,9 @@ public class NewGameView extends JFrame
 	}
 
 	/**
-	 * @return the secondPlayer
+	 * Pobieranie nazwy drugiego gracza
+	 * 
+	 * @return secondPlayer nazwa drugiego gracza
 	 */
 	public String getSecondPlayer() 
 	{
@@ -93,7 +95,9 @@ public class NewGameView extends JFrame
 	}
 
 	/**
-	 * @return the thirdPlayer
+	 * Pobieranie nazwy trzeciego gracza
+	 * 
+	 * @return thirdPlayer nazwa trzeciego gracza
 	 */
 	public String getThirdPlayer()
 	{
@@ -101,7 +105,9 @@ public class NewGameView extends JFrame
 	}
 
 	/**
-	 * @return the fourthPlayer
+	 * Pobieranie nazwy czwartego gracza
+	 * 
+	 * @return fourthPlayer nazwa czwartego gracza
 	 */
 	public String getFourthPlayer()
 	{

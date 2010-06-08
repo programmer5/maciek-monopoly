@@ -10,6 +10,7 @@ import controller.Controller;
 
 /**
  * Akcja rzutu kostka
+ * 
  * @author Maciej Sulek
  */
 public class ExtendRollDiceAction extends ExtendAction 
@@ -19,6 +20,7 @@ public class ExtendRollDiceAction extends ExtendAction
 	
 	/**
 	 * Konstruktor klasy ExtendRollDiceAction
+	 * 
 	 * @param controller kontroler gry
 	 */
 	public ExtendRollDiceAction(final Controller controller) 

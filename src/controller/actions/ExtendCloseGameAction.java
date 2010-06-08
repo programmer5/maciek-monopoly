@@ -7,7 +7,7 @@ package controller.actions;
 public class ExtendCloseGameAction extends ExtendAction
 {
 	/**
-	 * Funkcja ukrywajaca okno nowej gry
+	 * Funkcja zamykajaca gre
 	 */
 	@Override
 	public void perform() 
