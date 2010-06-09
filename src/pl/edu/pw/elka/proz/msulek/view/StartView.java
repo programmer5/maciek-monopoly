@@ -11,7 +11,7 @@ public final class StartView extends FieldView
 {
     /** wygenerowane id */
     private static final long serialVersionUID = 2472144162673923689L;
-    
+
     /** panel z obrazem */
     private final ImagePanel startPanel;
 

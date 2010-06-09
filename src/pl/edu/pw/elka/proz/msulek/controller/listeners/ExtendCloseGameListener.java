@@ -7,7 +7,6 @@ import java.util.concurrent.BlockingQueue;
 import pl.edu.pw.elka.proz.msulek.controller.events.ExtendCloseGameEvent;
 import pl.edu.pw.elka.proz.msulek.controller.events.ExtendEvent;
 
-
 /**
  * Nasluchiwanie nacisniecia przycisku zamkniecia gry
  * 

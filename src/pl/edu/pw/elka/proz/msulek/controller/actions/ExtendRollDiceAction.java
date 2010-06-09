@@ -8,7 +8,6 @@ import pl.edu.pw.elka.proz.msulek.model.Model;
 import pl.edu.pw.elka.proz.msulek.model.TrainModel;
 import pl.edu.pw.elka.proz.msulek.view.ViewChanger;
 
-
 /**
  * Akcja rzutu kostka
  * 

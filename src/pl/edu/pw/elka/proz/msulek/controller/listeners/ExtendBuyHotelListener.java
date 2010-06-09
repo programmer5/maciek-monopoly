@@ -7,7 +7,6 @@ import java.util.concurrent.BlockingQueue;
 import pl.edu.pw.elka.proz.msulek.controller.events.ExtendBuyHotelEvent;
 import pl.edu.pw.elka.proz.msulek.controller.events.ExtendEvent;
 
-
 /**
  * Nasluchiwacz czy zostal wcisniety przycisk zakupu hotelu
  * 

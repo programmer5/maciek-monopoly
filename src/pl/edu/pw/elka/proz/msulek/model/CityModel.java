@@ -1,11 +1,9 @@
 package pl.edu.pw.elka.proz.msulek.model;
 
 /**
- * 
  * Klasa modelu miasta
  * 
  * @author Maciej Sułek
- * 
  */
 public final class CityModel extends FieldModel
 {

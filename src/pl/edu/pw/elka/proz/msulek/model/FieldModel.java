@@ -1,11 +1,9 @@
 package pl.edu.pw.elka.proz.msulek.model;
 
 /**
- * 
  * Klasa przechowujaca informacje o polu
  * 
  * @author Maciej Sułek
- * 
  */
 public class FieldModel
 {

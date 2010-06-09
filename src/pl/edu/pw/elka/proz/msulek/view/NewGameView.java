@@ -14,7 +14,6 @@ import pl.edu.pw.elka.proz.msulek.controller.events.ExtendEvent;
 import pl.edu.pw.elka.proz.msulek.controller.listeners.ExtendCloseNewGameListener;
 import pl.edu.pw.elka.proz.msulek.controller.listeners.ExtendStartNewGameListener;
 
-
 /**
  * Klasa okna rozpoczynajacego nowa gre
  * 
@@ -114,7 +113,7 @@ public class NewGameView extends JFrame
     {
         return fourthPlayer.getText();
     }
-    
+
     /**
      * Czyszczenie pol z nazwami graczy
      */

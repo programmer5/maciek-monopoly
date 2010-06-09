@@ -7,7 +7,6 @@ import java.util.concurrent.BlockingQueue;
 import pl.edu.pw.elka.proz.msulek.controller.events.ExtendCloseNewGameEvent;
 import pl.edu.pw.elka.proz.msulek.controller.events.ExtendEvent;
 
-
 /**
  * Nasluchiwanie czy wcisnieto przycisk zamkniecia okna nowej gry
  * 

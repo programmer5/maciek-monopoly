@@ -5,7 +5,6 @@ import javax.swing.*;
 import pl.edu.pw.elka.proz.msulek.controller.events.ExtendEvent;
 import pl.edu.pw.elka.proz.msulek.controller.listeners.ExtendHideCityInfoListener;
 
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -163,8 +162,7 @@ public final class BoardView extends JFrame
     /**
      * Funkcja umozliwiająca pobranie szerokosci okna
      * 
-     * @return boarWidth
-     *             szerokosc okna
+     * @return boarWidth szerokosc okna
      */
     int getBoardWidth()
     {
@@ -174,8 +172,7 @@ public final class BoardView extends JFrame
     /**
      * Funkcja umozliwiająca pobranie wysokosci okna
      * 
-     * @return boardHeight
-     *              wysokosc okna
+     * @return boardHeight wysokosc okna
      */
     int getBoardHeight()
     {

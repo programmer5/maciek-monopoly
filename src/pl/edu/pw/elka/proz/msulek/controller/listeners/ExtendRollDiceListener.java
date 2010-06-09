@@ -7,7 +7,6 @@ import java.util.concurrent.BlockingQueue;
 import pl.edu.pw.elka.proz.msulek.controller.events.ExtendEvent;
 import pl.edu.pw.elka.proz.msulek.controller.events.ExtendRollDiceEvent;
 
-
 /**
  * Nasluchuje wcisniecie przycisku rzutu kostka
  * 

@@ -7,7 +7,6 @@ import java.util.concurrent.BlockingQueue;
 import pl.edu.pw.elka.proz.msulek.controller.events.ExtendCloseCityInfoEvent;
 import pl.edu.pw.elka.proz.msulek.controller.events.ExtendEvent;
 
-
 /**
  * Nasluchiwacz czy wcisnieto przycisk zamkniecia okna informacji o miescie
  * 

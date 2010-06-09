@@ -70,7 +70,8 @@ public class FieldView extends JPanel
     /**
      * Dodaje pionek do panelu pionkow
      * 
-     * @param c dodawany komponent
+     * @param c
+     *            dodawany komponent
      */
     public void addChecker(final Component c)
     {
@@ -80,7 +81,8 @@ public class FieldView extends JPanel
     /**
      * Usuwa pionek z panelu pionkow
      * 
-     * @param c usuwany komponent
+     * @param c
+     *            usuwany komponent
      */
     public void removeChecker(final Component c)
     {

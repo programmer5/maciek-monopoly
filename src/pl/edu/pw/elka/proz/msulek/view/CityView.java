@@ -32,7 +32,7 @@ public final class CityView extends FieldView
      * Konstruktor klasy
      * 
      * @param cityName
-     *              nazwa miasta
+     *            nazwa miasta
      */
     CityView(final String cityName)
     {
@@ -79,7 +79,7 @@ public final class CityView extends FieldView
         estatePanel.removeAll();
         estatePanel.add(new ImagePanel("data/hotel.jpg"));
     }
-    
+
     /**
      * Usuwanie wszystkiego z panelu nieruchomosci
      */

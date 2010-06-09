@@ -18,13 +18,10 @@ import javax.swing.UnsupportedLookAndFeelException;
 import pl.edu.pw.elka.proz.msulek.controller.events.ExtendEvent;
 import pl.edu.pw.elka.proz.msulek.controller.listeners.*;
 
-
 /**
- * 
  * Klasa widoku
  * 
  * @author Maciej Sulek
- * 
  */
 public class View
 {
@@ -199,9 +196,7 @@ public class View
     }
 
     /**
-     * 
      * Funkcja aktywująca potrzebne komponenty
-     * 
      */
     public void start()
     {
@@ -587,16 +582,23 @@ public class View
     {
         return actField[0];
     }
-    
+
     /**
      * Przygotowanie do nowej gry
      */
     public void newGame()
     {
-        for(int i = 0; i < 28; ++i)
+        setPlayerHighlight(0, false);
+        setPlayerHighlight(1, false);
+        setPlayerHighlight(2, false);
+        setPlayerHighlight(3, false);
+        for (int i = 0; i < 28; ++i)
         {
             field[i].checkerPanel.removeAll();
-            if (field[i] instanceof CityView) ((CityView)field[i]).clearEstatePanel();
+            if(field[i] instanceof CityView)
+            {
+                ((CityView) field[i]).clearEstatePanel();
+            }
             field[i].repaint();
         }
         newGameView.clearAllPlayersNames();

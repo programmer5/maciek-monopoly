@@ -3,31 +3,24 @@ package pl.edu.pw.elka.proz.msulek.model;
 import java.io.*;
 
 /**
- * 
  * Klasa odpowiedzialna za model gry
  * 
  * @author Maciej Sułek
- * 
  */
 public class Model
 {
     /** zbior pol */
     private final FieldModel fields[];
-
     /** liczba graczy */
     private int playerNumber;
-
     /** zbior graczy */
     private final PlayerModel players[];
-
     /** zbior pionkow */
     private final CheckerModel checkers[];
-
     /** aktualny gracz */
     private int currentPlayer;
-    
-    /** saldo przypisywane na poczatku gry*/
-    private final int SALDO = 1500;
+    /** saldo przypisywane na poczatku gry */
+    private final int SALDO = 3000;
 
     /**
      * Konstruktor klasy model
@@ -43,6 +36,7 @@ public class Model
 
     /**
      * Inicjalizacja modelu
+     * 
      */
     public void initialize()
     {
@@ -124,8 +118,7 @@ public class Model
     /**
      * Pobranie gracza
      * 
-     * @param playerNumber
-     *            numer gracza
+     * @param playerNumber numer gracza
      * @return player gracz
      */
     public PlayerModel getPlayer(final int playerNumber)
@@ -136,8 +129,7 @@ public class Model
     /**
      * Pobranie obiektu pionka
      * 
-     * @param checkerNumber
-     *            numer pionka
+     * @param checkerNumber numer pionka
      * @return checker pionek
      */
     public CheckerModel getChecker(final int checkerNumber)
@@ -241,10 +233,12 @@ public class Model
     }
 
     /**
-     * Zmiana wlasciciela 
+     * Zmiana wlasciciela
      * 
-     * @param cityNumber numer miasta/koleji
-     * @param owner numer wlasciciela
+     * @param cityNumber
+     *            numer miasta/koleji
+     * @param owner
+     *            numer wlasciciela
      */
     public void setCityOwner(final int cityNumber, final short owner)
     {
@@ -262,8 +256,10 @@ public class Model
      * Sprawdza czy gracz posiada posiada dzielnice lub ile dworcow kolejowych
      * posiada
      * 
-     * @param fieldNumber numer pola
-     * @param who domniemany wlasciciel
+     * @param fieldNumber
+     *            numer pola
+     * @param who
+     *            domniemany wlasciciel
      * @return number posiada 1 jesli ma dzielnice lub ilosc dworcow kolejowych
      */
     public int playerHasDistrict(final int fieldNumber, final short who)
@@ -300,28 +296,29 @@ public class Model
         }
         return -1;
     }
-    
+
     /**
      * Rozpoczynanie nowej gry
      */
     public void newGame()
     {
-        for(int i = 0; i < 4; ++i)
+        for (int i = 0; i < 4; ++i)
         {
             players[i].setSaldo(SALDO);
             players[i].setMustStay(0);
             checkers[i].setFieldNumber(0);
         }
-        for(int i =0; i < 28; ++i)
+        for (int i = 0; i < 28; ++i)
         {
             if(fields[i] instanceof CityModel)
             {
-                ((CityModel)fields[i]).setCityOwner((short)0);
+                ((CityModel) fields[i]).setCityOwner((short) 0);
             }
             else if(fields[i] instanceof TrainModel)
             {
-                ((TrainModel)fields[i]).setOwner((short)0);
+                ((TrainModel) fields[i]).setOwner((short) 0);
             }
         }
+        currentPlayer = 0;
     }
 }

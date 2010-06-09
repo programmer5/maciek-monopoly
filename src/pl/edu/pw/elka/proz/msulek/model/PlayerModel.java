@@ -1,11 +1,9 @@
 package pl.edu.pw.elka.proz.msulek.model;
 
 /**
- * 
  * Klasa gracza
  * 
  * @author Maciej Sulek
- * 
  */
 public class PlayerModel
 {

@@ -7,7 +7,6 @@ import java.util.concurrent.BlockingQueue;
 import pl.edu.pw.elka.proz.msulek.controller.events.ExtendBuyHouseEvent;
 import pl.edu.pw.elka.proz.msulek.controller.events.ExtendEvent;
 
-
 /**
  * Nasluchiwacz czy nie zostal nacisniety przycisk zakupu domu
  * 

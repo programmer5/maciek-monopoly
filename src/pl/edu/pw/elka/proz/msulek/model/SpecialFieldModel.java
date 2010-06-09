@@ -3,7 +3,6 @@ package pl.edu.pw.elka.proz.msulek.model;
 import java.util.Random;
 
 /**
- * 
  * Klasa do obsługi pól specjalnych takich jak: szansa, ryzyko, opłata, pójście
  * do więzienia, przejście przez start
  * 

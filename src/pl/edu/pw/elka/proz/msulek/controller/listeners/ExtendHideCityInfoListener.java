@@ -7,7 +7,6 @@ import java.util.concurrent.BlockingQueue;
 import pl.edu.pw.elka.proz.msulek.controller.events.ExtendEvent;
 import pl.edu.pw.elka.proz.msulek.controller.events.ExtendHideCityInfoEvent;
 
-
 /**
  * Wykrycie ruchu na panelu gry
  * 

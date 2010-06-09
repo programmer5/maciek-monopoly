@@ -14,7 +14,8 @@ public class ViewChanger
     /**
      * Konstruktor klasy ViewChanger
      * 
-     * @param mainView widok
+     * @param mainView
+     *            widok
      */
     public ViewChanger(final View mainView)
     {
@@ -265,7 +266,7 @@ public class ViewChanger
      * 
      * @param playerNumber
      *            numer gracza
-     */ 
+     */
     public void newGameCheckersState(final int playerNumber)
     {
         SwingUtilities.invokeLater(new Runnable()
@@ -476,7 +477,7 @@ public class ViewChanger
     {
         return mainView.getActField();
     }
-    
+
     /**
      * Przygotowanie do nowej gry
      */
